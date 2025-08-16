@@ -1,4 +1,5 @@
 {
+  "template": "page",
   "name": "Assessment Page",
   "sections": {
     "banner-custom": {
@@ -8,8 +9,5 @@
       "type": "grid-custom"
     }
   },
-  "order": [
-    "banner-custom",
-    "grid-custom"
-  ]
+  "order": ["banner-custom", "grid-custom"]
 }
