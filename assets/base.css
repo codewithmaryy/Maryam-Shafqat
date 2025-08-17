@@ -4282,7 +4282,7 @@ text-component {
 .assessment-banner{
   background-size: cover;
   background-position: center;
-  
+  padding: 40px 60px;
   display: flex;
   flex-direction: column;
   gap: 45px;
@@ -4293,7 +4293,7 @@ text-component {
   justify-content: space-between;
   align-items: center;
   background-color:  #F5F5F5;
-  padding: 40px 60px;
+  padding: 12px 12px
 
 }
 .main {
