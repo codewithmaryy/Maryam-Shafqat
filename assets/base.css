@@ -4293,7 +4293,14 @@ text-component {
   justify-content: space-between;
   align-items: center;
 }
-
+.main {
+    background-size: cover;
+  background-position: center;
+  max-width: 3840px;    /* From Figma */
+  min-height: 750px;    /* Reasonable height for desktop */
+  margin: 0 auto;
+  padding: 60px 40px;
+}
 .banner-logo{
   font-weight:600;
   font-size:20px;
