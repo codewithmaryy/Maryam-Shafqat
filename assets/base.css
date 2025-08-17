@@ -4350,3 +4350,7 @@ text-component {
   font-size:12px;
   background:#eee;
 }
+.banner-bottom{
+  display: flex;
+  
+}
