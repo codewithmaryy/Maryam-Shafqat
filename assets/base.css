@@ -4302,7 +4302,7 @@ text-component {
   min-height: 450px;  
 }
 .second-frame{
-  min-width: 200px;
+  min-width: 50vw;
    background-size: cover;
   background-position: center;
 
