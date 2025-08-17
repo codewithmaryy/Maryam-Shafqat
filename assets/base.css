@@ -4296,7 +4296,7 @@ text-component {
   padding: 12px 22px
 
 }
-.main {
+.first-frame {
    background-size: cover;
   background-position: center;
   min-height: 450px;  
@@ -4352,5 +4352,5 @@ text-component {
 }
 .banner-bottom{
   display: flex;
-  
+
 }
