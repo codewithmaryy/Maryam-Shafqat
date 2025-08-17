@@ -9,19 +9,20 @@ Custom Banner section for Assesment Page
     <div class="banner-tagline">{{ section.settings.tagline_text }}</div>
     <button id="primaryBtn" class="primary-btn">{{ section.settings.primary_btn_text }}</button>
   </div>
-<div  style="background-image:url('{{ "Frame2.png" | asset_url }}');" class="main" > 
+<div  style="background-image:url('{{ "Frame2.png" | asset_url }}');" class="first-frame" > 
 
 </div>
 
 
 <div   >
+  <div class="banner-bottom" >
   <div class="banner-main">
     <h1 class="banner-heading">{{ section.settings.main_heading }}</h1>
     <p class="banner-subtext">{{ section.settings.sub_text }}</p>
     <button id="ctaBtn" class="cta-btn">{{ section.settings.cta_btn_text }}</button>
   </div>
-  <div  style="background-image:url('{{ "Frame3.png" | asset_url }}');"  > </div>
-
+  <div  style="background-image:url('{{ "Frame3.png" | asset_url }}');" class="second-frame" > </div>
+</div>
   <div class="banner-note">
     {{ section.settings.bottom_note }}
   </div>
