@@ -3,8 +3,8 @@ Custom Banner section for Assesment Page
 {% endcomment %}
 
 
-<section class="assessment-banner" style="background-image:url('{{ "Frame.png" | asset_url }}');">
-  <div class="banner-top">
+<section class="assessment-banner" >
+  <div class="banner-top" style="background-image:url('{{ "Frame.png" | asset_url }}');"  >
     <div class="banner-logo">{{ section.settings.logo_text }}</div>
     <div class="banner-tagline">{{ section.settings.tagline_text }}</div>
     <button id="primaryBtn" class="primary-btn">{{ section.settings.primary_btn_text }}</button>
