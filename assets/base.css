@@ -4295,6 +4295,8 @@ text-component {
 }
 .main {
     min-height: 750px;
+    background-size: cover;
+  background-position: center;
 }
 .banner-logo{
   font-weight:600;
