@@ -4406,6 +4406,7 @@ text-component {
   .first-frame {
     position:relative;
     min-height:380px;
+    margin-top:28px
   }
 
   .first-frame::after{
