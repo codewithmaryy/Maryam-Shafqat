@@ -4279,85 +4279,133 @@ text-component {
   }
 }
 
-.assessment-banner{
-  background-size: cover;
-  background-position: center;
+.assessment-banner {
   padding: 40px 60px;
-  display: flex;
-  flex-direction: column;
- 
+  color: #000;
 }
 
-.banner-top{
+/* TOP BAR */
+.banner-top {
+  background: #f5f5f5;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background-color:  #F5F5F5;
-  padding: 12px 22px
-
+  justify-content: space-between;
+  padding: 12px 20px;
 }
-.first-frame {
-   background-size: cover;
-  background-position: center;
-  min-height: 450px;  
+.hamburger {
+  display: none;
+  font-size: 22px;
+  cursor: pointer;
 }
-.second-frame{
-  min-width: 51vw;
-   background-size: cover;
-  background-position: center;
-  min-height: 49vh;
-
+.banner-logo {
+  font-weight: 600;
+  font-size: 20px;
 }
-.banner-logo{
-  font-weight:600;
-  font-size:20px;
+.banner-tagline {
+  font-size: 15px;
 }
-
-.banner-tagline{
-  font-size:15px;
-}
-
-.primary-btn{
+.primary-btn {
   background: #FFD400;
   padding: 10px 28px;
-  font-size:14px;
-  border:none;
-  cursor:pointer;
-  transition:.3s;
+  border: none;
+  cursor: pointer;
 }
 
-.primary-btn.animate,
-.cta-btn.animate{
-  transform: scale(1.05);
+/* FIRST FRAME (full width) */
+.first-frame {
+  margin-top: 30px;
+  background-size: cover;
+  background-position: center;
+  min-height: 550px;
 }
 
-.banner-main h1{
-  font-size:60px;
-  font-weight:800;
-}
-
-.banner-subtext{
-  max-width:500px;
-  margin:12px 0;
-}
-
-.cta-btn{
-  background: #000;
-  color:#fff;
-  padding:14px 35px;
-  font-size:14px;
-  border:none;
-  cursor:pointer;
-  transition:.3s;
-}
-
-.banner-note{
-  text-align:center;
-  padding:10px 0;
-  font-size:12px;
-  background:#eee;
-}
-.banner-bottom{
+/* TEXT + SECOND FRAME ROW */
+.banner-row {
   display: flex;
+  gap: 40px;
+  margin-top: 40px;
+}
+.banner-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.banner-heading {
+  font-size: 60px;
+  font-weight: 800;
+}
+.banner-subtext {
+  margin: 15px 0;
+  max-width: 460px;
+}
+.cta-btn {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 14px 36px;
+  cursor: pointer;
+}
+.second-frame {
+  flex: 1;
+  min-height: 500px;
+  background-size: cover;
+  background-position: center;
+}
 
+/* BOTTOM NOTE */
+.banner-note {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 12px;
+  background: #eee;
+  padding: 10px 0;
+}
+
+/* ------------------ MOBILE ------------------ */
+@media (max-width: 1023px) {
+  .hamburger {
+    display: block;
+  }
+  .banner-logo {
+    display: none;         /* hide logo on left */
+  }
+  .banner-tagline {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .first-frame {
+    min-height: 380px;
+    position: relative;
+  }
+
+  /* hide desktop heading/subtext and overlay button on image instead  */
+  .banner-main {
+    display: none;
+  }
+  .first-frame::after {
+    content: "SHOP NOW →";
+    position: absolute;
+    left: 50%;
+    bottom: 25px;
+    transform: translateX(-50%);
+    background:#000;
+    color:#fff;
+    padding:12px 32px;
+    font-size:14px;
+  }
+
+  .banner-row {
+    flex-direction: column;
+    margin-top: 0;
+  }
+
+  .second-frame {
+    width: 100%;
+    min-height: 350px;
+    margin-top: 20px;
+  }
 }
