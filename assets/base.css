@@ -4376,6 +4376,11 @@ text-component {
     font-weight:600;
   }
 
+ .banner-main:not(.desktop-only) {
+    text-align:center;
+  }
+
+
   /* use this version of heading+subtext */
   .banner-main.desktop-only { display:none; }
 
