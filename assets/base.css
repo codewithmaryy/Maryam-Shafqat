@@ -4380,9 +4380,16 @@ text-component {
     margin-top: 45px; 
   }
     .banner-main:not(.desktop-only) .banner-heading {
-    margin-bottom:0;     /* remove bottom margin from heading */
+    margin-bottom:0; 
+     max-width: 197px;
+  margin-left: auto;
+  margin-right: auto;    /* remove bottom margin from heading */
   }
-
+/* sub text */
+.banner-main:not(.desktop-only) .banner-subtext {
+  max-width: 340px;
+  margin: 54px auto 0;           /* 54px below the heading */
+}
 
   /* use this version of heading+subtext */
   .banner-main.desktop-only { display:none; }
