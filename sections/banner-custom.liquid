@@ -13,24 +13,27 @@ Custom Banner section for Assessment Page
   </div>
 
   <!-- Heading and subtext (used on mobile only) -->
-  <div class="banner-main">
+<div class="banner-main">
+  <h1 class="banner-heading">{{ section.settings.main_heading }}</h1>
+  <p class="banner-subtext">Discover Joy: Your Ultimate Holiday Gift Destination.</p>
+</div>
+
+<!-- First frame (full width) -->
+<div class="first-frame" style="background-image:url('{{ "Frame2.png" | asset_url }}');"></div>
+
+<!-- Desktop row: text + frame -->
+<div class="banner-row">
+  <div class="banner-main desktop-only">
     <h1 class="banner-heading">{{ section.settings.main_heading }}</h1>
-    <p class="banner-subtext">{{ section.settings.sub_text }}</p>
+    <p class="banner-subtext">
+      {{ section.settings.sub_text }}
+    </p>
+    <button class="cta-btn">{{ section.settings.cta_btn_text }}</button>
   </div>
 
-  <!-- First frame (full width) -->
-  <div class="first-frame" style="background-image:url('{{ "Frame2.png" | asset_url }}');"></div>
+  <div class="second-frame" style="background-image:url('{{ "Frame3.png" | asset_url }}');"></div>
+</div>
 
-  <!-- Desktop row: text + frame -->
-  <div class="banner-row">
-    <div class="banner-main desktop-only">
-      <h1 class="banner-heading">{{ section.settings.main_heading }}</h1>
-      <p class="banner-subtext">{{ section.settings.sub_text }}</p>
-      <button class="cta-btn">{{ section.settings.cta_btn_text }}</button>
-    </div>
-
-    <div class="second-frame" style="background-image:url('{{ "Frame3.png" | asset_url }}');"></div>
-  </div>
 
   <!-- Banner note -->
   <div class="banner-note">{{ section.settings.bottom_note }}</div>

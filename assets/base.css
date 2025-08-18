@@ -4375,6 +4375,10 @@ text-component {
     font-weight:600;
   }
 
+  .banner-main.desktop-only {
+    display: none;
+  }
+
  .banner-main:not(.desktop-only) {
     text-align:center;
     margin-top: 45px; 
@@ -4419,6 +4423,9 @@ text-component {
   .banner-row   { display:flex; gap:40px; margin-top:40px; }
   .first-frame  { min-height:550px; }
   .second-frame { flex:1; min-height:500px; }
+  .banner-main:not(.desktop-only){
+    display: none;
+  }
 }
 
 
