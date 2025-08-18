@@ -4419,4 +4419,17 @@ text-component {
     margin-top: 20px;
   }
 }
+/* hide the small version on desktop */
+@media (min-width:1024px){
+  .banner-main:not(.desktop-only){
+    display:none;
+  }
+}
+
+/* hide the desktop version on mobile */
+@media (max-width:1023px){
+  .banner-main.desktop-only{
+    display:none;
+  }
+}
 
