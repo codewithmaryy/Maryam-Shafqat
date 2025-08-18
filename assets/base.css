@@ -4407,7 +4407,10 @@ text-component {
   }
 
   .banner-row        { flex-direction:column; margin-top:0; }
-  .second-frame      { width:100%; min-height:350px; margin-top:20px; }
+   /* hide second frame on mobile */
+  .second-frame {
+    display: none;
+  }
 }
 
 /* ----- DESKTOP ----- */
