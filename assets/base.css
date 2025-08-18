@@ -4362,74 +4362,47 @@ text-component {
   padding: 10px 0;
 }
 
-/* ------------------ MOBILE ------------------ */
+/* ----- MOBILE / SMALL ----- */
 @media (max-width: 1023px) {
-  .hamburger {
-    display: block;
-  }
+  .hamburger             { display:block; }
+  .banner-tagline        { display:none;  }
+  .primary-btn           { display:none;  }
 
-  /* show and center the logo */
+  /* center the logo */
   .banner-logo {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 18px;
-    font-weight: 600;
+    margin-left:auto;
+    margin-right:auto;
+    font-size:18px;
+    font-weight:600;
   }
 
-  /* hide tagline and primary (top) button */
-  .banner-tagline {
-    display: none;
-  }
-  .primary-btn {
-    display: none;
-  }
-
-  /* keep the rest of your mobile styles here ... */
+  /* use this version of heading+subtext */
+  .banner-main.desktop-only { display:none; }
 
   .first-frame {
-    min-height: 380px;
-    position: relative;
+    position:relative;
+    min-height:380px;
   }
 
-  .banner-main {
-    display: none;
+  .first-frame::after{
+    content:"SHOP NOW →";
+    position:absolute;
+    left:50%; bottom:25px;
+    transform:translateX(-50%);
+    background:#000; color:#fff;
+    padding:12px 30px;
   }
 
-  .first-frame::after {
-    content: "SHOP NOW →";
-    position: absolute;
-    left: 50%;
-    bottom: 25px;
-    transform: translateX(-50%);
-    background:#000;
-    color:#fff;
-    padding:12px 32px;
-    font-size:14px;
-  }
-
-  .banner-row {
-    flex-direction: column;
-    margin-top: 0;
-  }
-
-  .second-frame {
-    width: 100%;
-    min-height: 350px;
-    margin-top: 20px;
-  }
+  .banner-row        { flex-direction:column; margin-top:0; }
+  .second-frame      { width:100%; min-height:350px; margin-top:20px; }
 }
-/* hide the small version on desktop */
+
+/* ----- DESKTOP ----- */
 @media (min-width:1024px){
-  .banner-main:not(.desktop-only){
-    display:none;
-  }
+  .banner-main:not(.desktop-only){ display:none; }
+  .banner-row   { display:flex; gap:40px; margin-top:40px; }
+  .first-frame  { min-height:550px; }
+  .second-frame { flex:1; min-height:500px; }
 }
 
-/* hide the desktop version on mobile */
-@media (max-width:1023px){
-  .banner-main.desktop-only{
-    display:none;
-  }
-}
 
