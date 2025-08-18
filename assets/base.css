@@ -4354,7 +4354,7 @@ text-component {
 
 /* BOTTOM NOTE */
 .banner-note {
-  margin-top: 30px;
+ 
   text-align: center;
   font-size: 12px;
   background: #eee;
@@ -4400,7 +4400,7 @@ text-component {
   .first-frame::after{
     content:"SHOP NOW →";
     position:absolute;
-    left:50%; bottom:25px;
+    left:50%; bottom:57px;
     transform:translateX(-50%);
     background:#000; color:#fff;
     padding:12px 30px;
