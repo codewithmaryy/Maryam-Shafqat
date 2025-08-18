@@ -3,31 +3,30 @@ Custom Banner section for Assesment Page
 {% endcomment %}
 
 
-<section class="assessment-banner" >
+<section class="assessment-banner">
+  <!-- Top Bar -->
   <div class="banner-top">
+    <div class="hamburger">☰</div>
     <div class="banner-logo">{{ section.settings.logo_text }}</div>
-    <div class="banner-tagline">{{ section.settings.tagline_text }}</div>
-    <button id="primaryBtn" class="primary-btn">{{ section.settings.primary_btn_text }}</button>
   </div>
-<div  style="background-image:url('{{ "Frame2.png" | asset_url }}');" class="first-frame" > 
 
-</div>
-
-
-<div   >
-  <div class="banner-bottom" >
+  <!-- Main Heading / Subtitle -->
   <div class="banner-main">
     <h1 class="banner-heading">{{ section.settings.main_heading }}</h1>
     <p class="banner-subtext">{{ section.settings.sub_text }}</p>
+  </div>
+
+  <!-- Image / CTA -->
+  <div class="first-frame" style="background-image:url('{{ "Frame2.png" | asset_url }}');">
     <button id="ctaBtn" class="cta-btn">{{ section.settings.cta_btn_text }}</button>
   </div>
-  <div  style="background-image:url('{{ "Frame3.png" | asset_url }}');" class="second-frame" > </div>
-</div>
+
+  <!-- Banner note -->
   <div class="banner-note">
     {{ section.settings.bottom_note }}
   </div>
-  </div>
 </section>
+
 
 <script>
 // Simple hover animation (vanilla JS)
