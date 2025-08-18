@@ -1,67 +1,42 @@
-{% comment %}
-Custom Banner section for Assessment Page
-{% endcomment %}
+/* ----- MOBILE / SMALL ----- */
+@media (max-width: 1023px) {
+  .hamburger             { display:block; }
+  .banner-tagline        { display:none;  }
+  .primary-btn           { display:none;  }
 
-<section class="assessment-banner">
+  /* center the logo */
+  .banner-logo {
+    margin-left:auto;
+    margin-right:auto;
+    font-size:18px;
+    font-weight:600;
+  }
 
-<!-- Top bar -->
-<div class="banner-top">
-  <div class="hamburger">☰</div>
-  <div class="banner-logo">{{ section.settings.logo_text }}</div>
-  <div class="banner-tagline">{{ section.settings.tagline_text }}</div>
-  <button class="primary-btn">{{ section.settings.primary_btn_text }}</button>
-</div>
+  /* use this version of heading+subtext */
+  .banner-main.desktop-only { display:none; }
 
-<!-- Banner heading and subtext (shown on mobile, used in desktop row) -->
-<div class="banner-main">
-  <h1 class="banner-heading">{{ section.settings.main_heading }}</h1>
-  <p class="banner-subtext">{{ section.settings.sub_text }}</p>
-</div>
+  .first-frame {
+    position:relative;
+    min-height:380px;
+  }
 
-<!-- First frame (full width) -->
-<div class="first-frame" style="background-image:url('{{ "Frame2.png" | asset_url }}');"></div>
+  .first-frame::after{
+    content:"SHOP NOW →";
+    position:absolute;
+    left:50%; bottom:25px;
+    transform:translateX(-50%);
+    background:#000; color:#fff;
+    padding:12px 30px;
+  }
 
-<!-- Desktop row: text + frame -->
-<div class="banner-row">
-  <div class="banner-main desktop-only">
-    <h1 class="banner-heading">{{ section.settings.main_heading }}</h1>
-    <p class="banner-subtext">{{ section.settings.sub_text }}</p>
-    <button class="cta-btn">{{ section.settings.cta_btn_text }}</button>
-  </div>
-  <div class="second-frame" style="background-image:url('{{ "Frame3.png" | asset_url }}');"></div>
-</div>
-
-<div class="banner-note">{{ section.settings.bottom_note }}</div>
-
-
-  <!-- First frame (full width) -->
-  <div class="first-frame" style="background-image:url('{{ "Frame2.png" | asset_url }}');"></div>
-
-  <!-- Row with Text + Second Frame  -->
-  <div class="banner-row">
-    <div class="banner-main">
-      <h1 class="banner-heading">{{ section.settings.main_heading }}</h1>
-      <p class="banner-subtext">{{ section.settings.sub_text }}</p>
-      <button class="cta-btn">{{ section.settings.cta_btn_text }}</button>
-    </div>
-    <div class="second-frame" style="background-image:url('{{ "Frame3.png" | asset_url }}');"></div>
-  </div>
-
-  <div class="banner-note">{{ section.settings.bottom_note }}</div>
-</section>
-
-{% schema %}
-{
-  "name": "Custom Banner",
-  "settings": [
-    { "type": "text", "id": "logo_text",       "label": "Logo text",   "default": "TISSO VISON" },
-    { "type": "text", "id": "tagline_text",    "label": "Tagline",     "default": "Find the ideal gift for your loved ones."},
-    { "type": "text", "id": "primary_btn_text","label": "Primary Button",  "default": "CHOOSE GIFT"},
-
-    { "type": "text", "id": "main_heading",    "label": "Main Heading", "default": "The Gift Guide"},
-    { "type": "textarea","id": "sub_text",     "label": "Sub Text",     "default":"Discover Joy: Your Ultimate Holiday Gift Destination."},
-    { "type": "text", "id": "cta_btn_text",    "label": "CTA Button",   "default":"SHOP NOW"},
-    { "type": "text", "id": "bottom_note",     "label": "Bottom Note",  "default":"SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"}
-  ]
+  .banner-row        { flex-direction:column; margin-top:0; }
+  .second-frame      { width:100%; min-height:350px; margin-top:20px; }
 }
-{% endschema %}
+
+/* ----- DESKTOP ----- */
+@media (min-width:1024px){
+  .banner-main:not(.desktop-only){ display:none; }
+  .banner-row   { display:flex; gap:40px; margin-top:40px; }
+  .first-frame  { min-height:550px; }
+  .second-frame { flex:1; min-height:500px; }
+}
