@@ -1,27 +1,38 @@
 {% comment %}
 Custom Banner section for Assessment Page
-Desktop:
-  - banner-top
-  - first-frame (full width)
-  - row => [Text left, Frame2 right]
-  - banner-note
-
-Mobile:
-  - banner-top (hamburger + centered logo)
-  - first-frame with overlaid CTA
-  - frame2 (full width under first)
-  - banner-note
 {% endcomment %}
 
 <section class="assessment-banner">
 
-  <!-- Top bar -->
-  <div class="banner-top">
-    <div class="hamburger">☰</div>
-    <div class="banner-logo">{{ section.settings.logo_text }}</div>
-    <div class="banner-tagline">{{ section.settings.tagline_text }}</div>
-    <button class="primary-btn">{{ section.settings.primary_btn_text }}</button>
+<!-- Top bar -->
+<div class="banner-top">
+  <div class="hamburger">☰</div>
+  <div class="banner-logo">{{ section.settings.logo_text }}</div>
+  <div class="banner-tagline">{{ section.settings.tagline_text }}</div>
+  <button class="primary-btn">{{ section.settings.primary_btn_text }}</button>
+</div>
+
+<!-- Banner heading and subtext (shown on mobile, used in desktop row) -->
+<div class="banner-main">
+  <h1 class="banner-heading">{{ section.settings.main_heading }}</h1>
+  <p class="banner-subtext">{{ section.settings.sub_text }}</p>
+</div>
+
+<!-- First frame (full width) -->
+<div class="first-frame" style="background-image:url('{{ "Frame2.png" | asset_url }}');"></div>
+
+<!-- Desktop row: text + frame -->
+<div class="banner-row">
+  <div class="banner-main desktop-only">
+    <h1 class="banner-heading">{{ section.settings.main_heading }}</h1>
+    <p class="banner-subtext">{{ section.settings.sub_text }}</p>
+    <button class="cta-btn">{{ section.settings.cta_btn_text }}</button>
   </div>
+  <div class="second-frame" style="background-image:url('{{ "Frame3.png" | asset_url }}');"></div>
+</div>
+
+<div class="banner-note">{{ section.settings.bottom_note }}</div>
+
 
   <!-- First frame (full width) -->
   <div class="first-frame" style="background-image:url('{{ "Frame2.png" | asset_url }}');"></div>
