@@ -4302,9 +4302,10 @@ text-component {
   min-height: 450px;  
 }
 .second-frame{
-  min-width: 50vw;
+  min-width: 51vw;
    background-size: cover;
   background-position: center;
+  min-height: 49vh;
 
 }
 .banner-logo{
