@@ -4377,7 +4377,7 @@ text-component {
 
  .banner-main:not(.desktop-only) {
     text-align:center;
-    margin-top: 25px; 
+    margin-top: 45px; 
   }
     .banner-main:not(.desktop-only) .banner-heading {
     margin-bottom:0;     /* remove bottom margin from heading */
