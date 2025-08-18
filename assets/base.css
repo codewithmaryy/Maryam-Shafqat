@@ -4312,7 +4312,7 @@ text-component {
 
 /* FIRST FRAME (full width) */
 .first-frame {
-  margin-top: 30px;
+ 
   background-size: cover;
   background-position: center;
   min-height: 550px;
@@ -4322,7 +4322,7 @@ text-component {
 .banner-row {
   display: flex;
   gap: 40px;
-  margin-top: 40px;
+ 
 }
 .banner-main {
   flex: 1;
@@ -4422,14 +4422,15 @@ text-component {
   .banner-main:not(.desktop-only){ display:none; }
   .banner-row   { display:flex; gap:40px;  }
   .banner-row .banner-main.desktop-only {
-  padding-left: 50px;            
+  padding-left: 96px;            
 }
 .banner-row .banner-main.desktop-only .cta-btn {
   width: auto;                   /* prevents full-width button */
-  max-width: 280px;              /* optional: prevents it from being too wide */
+  max-width: 260px; 
+  margin-top:12px;            
 }
   .first-frame  { min-height:550px; }
-  .second-frame { flex:1; min-height:500px; }
+  .second-frame { flex:1; min-height:419px; }
   .banner-main:not(.desktop-only){
     display: none;
   }
