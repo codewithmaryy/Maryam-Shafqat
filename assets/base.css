@@ -4282,82 +4282,90 @@ text-component {
 .assessment-banner{
   background-size: cover;
   background-position: center;
-  padding: 40px 60px;
-  display: flex;
-  flex-direction: column;
- 
+  padding: 20px;
 }
 
+/* ------- Top Bar ------- */
 .banner-top{
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  background-color:  #F5F5F5;
-  padding: 12px 22px
+  background-color:#F5F5F5;
+  padding: 10px 16px;
+  position: relative;
+}
 
+.banner-top .hamburger{
+  position: absolute;
+  left: 16px;
+  font-size: 20px;
+  cursor: pointer;
 }
-.first-frame {
-   background-size: cover;
-  background-position: center;
-  min-height: 450px;  
-}
-.second-frame{
-  min-width: 51vw;
-   background-size: cover;
-  background-position: center;
-  min-height: 49vh;
 
-}
 .banner-logo{
   font-weight:600;
   font-size:20px;
 }
 
-.banner-tagline{
-  font-size:15px;
+/* ------- Heading / Subtext ------- */
+.banner-main{
+  text-align:center;
+  margin: 40px 0;
 }
 
-.primary-btn{
-  background: #FFD400;
-  padding: 10px 28px;
-  font-size:14px;
-  border:none;
-  cursor:pointer;
-  transition:.3s;
-}
-
-.primary-btn.animate,
-.cta-btn.animate{
-  transform: scale(1.05);
-}
-
-.banner-main h1{
+.banner-heading{
   font-size:60px;
   font-weight:800;
 }
 
 .banner-subtext{
+  margin-top:10px;
   max-width:500px;
-  margin:12px 0;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* ------- Frame + CTA ------- */
+.first-frame{
+  background-size:cover;
+  background-position:center;
+  min-height:500px;
+  position:relative;
 }
 
 .cta-btn{
-  background: #000;
+  position:absolute;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#000;
   color:#fff;
-  padding:14px 35px;
-  font-size:14px;
+  padding:12px 30px;
   border:none;
   cursor:pointer;
-  transition:.3s;
 }
 
+/* ------- Banner Note ------- */
 .banner-note{
   text-align:center;
-  padding:10px 0;
+  padding:15px 0;
   font-size:12px;
   background:#eee;
+  margin-top: 30px;
 }
-.banner-bottom{
-  display: flex;
 
+/* -------- Responsive --------*/
+@media (max-width: 768px){
+  .banner-heading{
+    font-size:32px;
+  }
+  .first-frame{
+    min-height:350px;
+  }
 }
+
+@media (min-width:992px){
+  .banner-heading{ font-size:70px; }
+  .first-frame{ min-height:700px; }
+}
+
