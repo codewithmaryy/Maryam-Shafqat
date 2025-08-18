@@ -4379,6 +4379,9 @@ text-component {
     text-align:center;
     margin-top: 25px; 
   }
+    .banner-main:not(.desktop-only) .banner-heading {
+    margin-bottom:0;     /* remove bottom margin from heading */
+  }
 
 
   /* use this version of heading+subtext */
