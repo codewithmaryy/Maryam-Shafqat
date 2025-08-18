@@ -4420,7 +4420,14 @@ text-component {
 /* ----- DESKTOP ----- */
 @media (min-width:1024px){
   .banner-main:not(.desktop-only){ display:none; }
-  .banner-row   { display:flex; gap:40px; margin-top:40px; }
+  .banner-row   { display:flex; gap:40px;  }
+  .banner-row .banner-main.desktop-only {
+  padding-left: 50px;            
+}
+.banner-row .banner-main.desktop-only .cta-btn {
+  width: auto;                   /* prevents full-width button */
+  max-width: 280px;              /* optional: prevents it from being too wide */
+}
   .first-frame  { min-height:550px; }
   .second-frame { flex:1; min-height:500px; }
   .banner-main:not(.desktop-only){
