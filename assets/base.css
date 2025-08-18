@@ -4425,42 +4425,31 @@ text-component {
   }
 }
 
-/* ----- DESKTOP ----- */
-@media (min-width:1024px){
-  .banner-main:not(.desktop-only){ display:none; }
-  .banner-row   { display:flex; gap:40px;  }
-  .banner-row .banner-main.desktop-only {
-  padding-left: 96px;            
-}
-.banner-row .banner-main.desktop-only .cta-btn {
-  width: auto;                   /* prevents full-width button */
-  max-width: 260px; 
-  margin-top:12px;            
-}
-  .first-frame  { min-height:550px; }
-  .second-frame { flex:1; min-height:419px; }
-  .banner-main:not(.desktop-only){
-    display: none;
-  }
+/* ----- default (desktop) ----- */
+.grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
 }
 
-/* --- responsive columns --- */
+/* 2 columns on tablet */
 @media (max-width:1023px) {
   .grid-wrapper {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* 1 column on small mobile */
 @media (max-width:599px) {
   .grid-wrapper {
     grid-template-columns: repeat(1, 1fr);
   }
 }
 
-/* --- overlay + icon --- */
+/* + icon overlay (unchanged) */
 .grid-item {
   position: relative;
 }
-
 .grid-item .plus-icon {
   position: absolute;
   top: 10px;
