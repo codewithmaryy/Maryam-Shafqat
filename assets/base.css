@@ -4361,6 +4361,13 @@ text-component {
   padding: 10px 0;
 }
 
+.primary-btn.animate,
+.cta-btn.animate {
+  transform: scale(1.05);
+  transition: transform 0.2s ease-in-out;
+}
+
+
 /* ----- MOBILE / SMALL ----- */
 @media (max-width: 1023px) {
   .hamburger             { display:block; }

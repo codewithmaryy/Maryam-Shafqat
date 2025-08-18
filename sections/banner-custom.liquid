@@ -40,6 +40,10 @@ Custom Banner section for Assessment Page
 
 </section>
 
+
+
+
+
 {% schema %}
 {
   "name": "Custom Banner",
@@ -54,3 +58,25 @@ Custom Banner section for Assessment Page
   ]
 }
 {% endschema %}
+
+<script>
+  // Wait until the DOM is ready
+  document.addEventListener('DOMContentLoaded', function () {
+    const primaryBtn = document.querySelector('.primary-btn');
+    const ctaBtn     = document.querySelector('.cta-btn');
+
+    // reusable function
+    function addHoverAnimation(btn) {
+      if (!btn) return;
+      btn.addEventListener('mouseenter', () => {
+        btn.classList.add('animate');
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.classList.remove('animate');
+      });
+    }
+
+    addHoverAnimation(primaryBtn);
+    addHoverAnimation(ctaBtn);
+  });
+</script>
