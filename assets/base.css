@@ -4280,7 +4280,7 @@ text-component {
 }
 
 .assessment-banner {
-  padding: 40px 60px;
+  
   color: #000;
 }
 
@@ -4378,6 +4378,7 @@ text-component {
 
  .banner-main:not(.desktop-only) {
     text-align:center;
+    margin-top: 25px; 
   }
 
 
