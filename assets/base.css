@@ -4368,7 +4368,7 @@ text-component {
     display: block;
   }
 
-  /* show logo and center it */
+  /* show and center the logo */
   .banner-logo {
     display: block;
     margin-left: auto;
@@ -4377,10 +4377,15 @@ text-component {
     font-weight: 600;
   }
 
-  /* hide tagline */
+  /* hide tagline and primary (top) button */
   .banner-tagline {
     display: none;
   }
+  .primary-btn {
+    display: none;
+  }
+
+  /* keep the rest of your mobile styles here ... */
 
   .first-frame {
     min-height: 380px;
@@ -4397,10 +4402,10 @@ text-component {
     left: 50%;
     bottom: 25px;
     transform: translateX(-50%);
-    background: #000;
+    background:#000;
     color:#fff;
-    padding: 12px 32px;
-    font-size: 14px;
+    padding:12px 32px;
+    font-size:14px;
   }
 
   .banner-row {
