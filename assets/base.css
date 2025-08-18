@@ -4367,14 +4367,19 @@ text-component {
   .hamburger {
     display: block;
   }
+
+  /* show logo and center it */
   .banner-logo {
-    display: none;         /* hide logo on left */
-  }
-  .banner-tagline {
+    display: block;
     margin-left: auto;
     margin-right: auto;
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 600;
+  }
+
+  /* hide tagline */
+  .banner-tagline {
+    display: none;
   }
 
   .first-frame {
@@ -4382,20 +4387,20 @@ text-component {
     position: relative;
   }
 
-  /* hide desktop heading/subtext and overlay button on image instead  */
   .banner-main {
     display: none;
   }
+
   .first-frame::after {
     content: "SHOP NOW →";
     position: absolute;
     left: 50%;
     bottom: 25px;
     transform: translateX(-50%);
-    background:#000;
+    background: #000;
     color:#fff;
-    padding:12px 32px;
-    font-size:14px;
+    padding: 12px 32px;
+    font-size: 14px;
   }
 
   .banner-row {
@@ -4409,3 +4414,4 @@ text-component {
     margin-top: 20px;
   }
 }
+
