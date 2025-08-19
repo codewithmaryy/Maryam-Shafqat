@@ -53,98 +53,48 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  const modal        = document.getElementById('product-modal');
-  const closeModal   = document.querySelector('.modal-close');
-  const modalTitle   = document.querySelector('.modal-title');
-  const modalPrice   = document.querySelector('.modal-price');
-  const modalDesc    = document.querySelector('.modal-description');
-  const modalImg     = document.querySelector('.modal-image');
-  const variantForm  = document.getElementById('variantForm');
-  const addToCartBtn = document.getElementById('addToCartBtn');
+  // wait a tiny bit
+  setTimeout(() => {
+    document.querySelectorAll('.plus-icon').forEach(icon => {
+      icon.addEventListener('click', async function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const handle = this.dataset.handle;
+        if(!handle) return console.error("No handle found");
 
-  // Open modal when + icon clicked
-  document.querySelectorAll('.plus-icon').forEach(icon => {
-    icon.addEventListener('click', async function(e) {
-      e.preventDefault();
-      e.stopPropagation();
+        try {
+          const res  = await fetch(`/products/${handle}.js`);
+          const data = await res.json();
+          // fill modal...
+          const modal = document.getElementById('product-modal');
+          modal.querySelector('.modal-title').textContent = data.title;
+          modal.querySelector('.modal-price').textContent = Shopify.formatMoney(data.price);
+          modal.querySelector('.modal-description').textContent = data.description;
+          modal.querySelector('.modal-image').src = data.images[0];
 
-      const handle = this.getAttribute('data-handle');
+          const variantForm = document.getElementById('variantForm');
+          variantForm.innerHTML = '';
+          data.variants.forEach((v, i) => {
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = 'variant_id';
+            radio.value = v.id;
+            radio.id = 'var'+v.id;
+            if(i===0) radio.checked=true;
+            const label = document.createElement('label');
+            label.htmlFor = 'var'+v.id;
+            label.textContent = v.title;
+            variantForm.appendChild(radio);
+            variantForm.appendChild(label);
+          });
 
-      try {
-        const res  = await fetch(`/products/${handle}.js`);
-        const data = await res.json();
-
-        // Fill modal content
-        modalTitle.textContent = data.title;
-        modalPrice.textContent = Shopify.formatMoney(data.price);
-        modalDesc.textContent  = data.description;
-        modalImg.src           = data.images[0];
-
-        // Build variant radio buttons
-        variantForm.innerHTML = '';
-        data.variants.forEach((v, index) => {
-          const radio = document.createElement('input');
-          radio.type  = 'radio';
-          radio.name  = 'variant_id';
-          radio.value = v.id;
-          radio.id    = 'var' + v.id;
-
-          // Auto-select first variant
-          if(index === 0) radio.checked = true;
-
-          const label = document.createElement('label');
-          label.htmlFor = 'var' + v.id;
-          label.textContent = v.title;
-
-          variantForm.appendChild(radio);
-          variantForm.appendChild(label);
-        });
-
-        // Show modal
-        modal.style.display = 'block';
-      } catch(err) {
-        console.error("Failed to load product:", err);
-      }
-    });
-  });
-
-  // Close modal
-  closeModal.addEventListener('click', () => modal.style.display = 'none');
-
-  // Close modal when clicking outside
-  window.addEventListener('click', (e) => {
-    if(e.target === modal) modal.style.display = 'none';
-  });
-
-  // Add to cart
-  addToCartBtn.addEventListener('click', async function(e){
-    e.preventDefault();
-    const formData = new FormData(variantForm);
-    const variantId = formData.get('variant_id');
-
-    if(!variantId) return alert("Please select a variant!");
-
-    try {
-      await fetch('/cart/add.js',{
-        method:'POST',
-        headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({ quantity:1, id:variantId })
+          modal.style.display = 'block';
+        } catch(err) {
+          console.error("Failed to load product:", err);
+        }
       });
-
-      // Optional: auto-add conditional product (replace ID with actual)
-      // if(selectedVariantTitle.includes('Black') && selectedVariantTitle.includes('Medium')){
-      //   await fetch('/cart/add.js',{
-      //     method:'POST',
-      //     headers:{ 'Content-Type':'application/json' },
-      //     body: JSON.stringify({ quantity:1, id:'SOFT_WINTER_JACKET_VARIANT_ID' })
-      //   });
-      // }
-
-      modal.style.display = 'none';
-      alert("Product added to cart!");
-    } catch(err) {
-      console.error("Add to cart failed:", err);
-    }
-  });
+    });
+  }, 500); // 0.5s delay ensures section is fully loaded
 });
+
 </script>
