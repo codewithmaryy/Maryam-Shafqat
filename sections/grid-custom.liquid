@@ -52,60 +52,75 @@
 {% endschema %}
 
 <script>
+function formatMoney(cents) {
+  return '$' + (cents / 100).toFixed(2);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
+  const modal = document.getElementById('product-modal');
+  const variantForm = document.getElementById('variantForm');
 
-  // Helper function to format Shopify prices (in cents)
-  function formatMoney(cents, currency = "$") {
-    return currency + (cents / 100).toFixed(2);
-  }
+  document.querySelectorAll('.plus-icon').forEach(icon => {
+    icon.addEventListener('click', async function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const handle = this.dataset.handle;
+      if(!handle) return console.error("No handle found");
 
-  // wait a tiny bit
-  setTimeout(() => {
-    document.querySelectorAll('.plus-icon').forEach(icon => {
-      icon.addEventListener('click', async function(e) {
-        e.preventDefault();
-        e.stopPropagation();
+      try {
+        const res = await fetch(`/products/${handle}.js`);
+        const data = await res.json();
 
-        const handle = this.dataset.handle;
-        if(!handle) return console.error("No handle found");
+        modal.querySelector('.modal-title').textContent = data.title;
+        modal.querySelector('.modal-price').textContent = formatMoney(data.price);
+        modal.querySelector('.modal-description').innerHTML = data.description;
+        modal.querySelector('.modal-image').src = data.images[0];
 
-        try {
-          const res  = await fetch(`/products/${handle}.js`);
-          const data = await res.json();
+        // variants
+        variantForm.innerHTML = '';
+        data.variants.forEach((v, i) => {
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = 'variant_id';
+          radio.value = v.id;
+          radio.id = 'var'+v.id;
+          if(i===0) radio.checked=true;
+          const label = document.createElement('label');
+          label.htmlFor = 'var'+v.id;
+          label.textContent = v.title;
+          variantForm.appendChild(radio);
+          variantForm.appendChild(label);
+        });
 
-          // fill modal...
-          const modal = document.getElementById('product-modal');
-          modal.querySelector('.modal-title').textContent = data.title;
-          // Use custom formatMoney instead of Shopify.formatMoney
-          modal.querySelector('.modal-price').textContent = formatMoney(data.price);
-          modal.querySelector('.modal-description').textContent = data.description;
-          modal.querySelector('.modal-image').src = data.images[0];
-
-          const variantForm = document.getElementById('variantForm');
-          variantForm.innerHTML = '';
-          data.variants.forEach((v, i) => {
-            const radio = document.createElement('input');
-            radio.type = 'radio';
-            radio.name = 'variant_id';
-            radio.value = v.id;
-            radio.id = 'var'+v.id;
-            if(i===0) radio.checked=true;
-
-            const label = document.createElement('label');
-            label.htmlFor = 'var'+v.id;
-            label.textContent = v.title;
-
-            variantForm.appendChild(radio);
-            variantForm.appendChild(label);
-          });
-
-          modal.style.display = 'block';
-        } catch(err) {
-          console.error("Failed to load product:", err);
-        }
-      });
+        modal.style.display = 'block';
+      } catch(err) {
+        console.error("Failed to load product:", err);
+      }
     });
-  }, 500); // 0.5s delay ensures section is fully loaded
+  });
+
+  // close modal
+  modal.querySelector('.modal-close').addEventListener('click', () => modal.style.display = 'none');
+  window.addEventListener('click', (e) => { if(e.target===modal) modal.style.display='none'; });
+
+  // add to cart
+  document.getElementById('addToCartBtn').addEventListener('click', async function(e){
+    e.preventDefault();
+    const formData = new FormData(variantForm);
+    const variantId = formData.get('variant_id');
+    if(!variantId) return alert("Please select a variant!");
+    try {
+      await fetch('/cart/add.js', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({ quantity:1, id:variantId })
+      });
+      alert("Product added to cart!");
+      modal.style.display = 'none';
+    } catch(err) {
+      console.error("Add to cart failed:", err);
+    }
+  });
 });
 </script>
 
