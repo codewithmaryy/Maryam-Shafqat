@@ -4500,3 +4500,9 @@ text-component {
   display: inline-block;
 }
 
+.product-wrapper img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none; /* ensures clicks go to .plus-icon */
+}
