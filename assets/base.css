@@ -4464,45 +4464,42 @@ text-component {
   }
 }
 
-.grid-item {
-  position: relative; /* make + icon relative to this container */
-  overflow: hidden;   /* optional, prevents icon from spilling outside */
-}
-
-/* + icon styling */
-.plus-icon {
-  position: absolute;
-  top: 10px;               /* distance from top of grid item */
-  right: 10px;             /* distance from right */
-  z-index: 1000;           /* very high to stay above image */
-  cursor: pointer;
-  font-size: 20px;
-  font-weight: 600;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.5);
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  user-select: none;
-  transition: transform 0.2s ease;
-}
-
-/* Optional hover effect */
-
-.product-wrapper:hover .plus-icon {
-  transform: scale(1.1);
-}
-.product-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.product-wrapper img {
-  display: block;
+/* Modal background */
+#product-modal {
+  display: none;              /* hidden by default */
+  position: fixed;            /* stay in viewport */
+  top: 0;
+  left: 0;
   width: 100%;
-  height: auto;
-  pointer-events: none; /* ensures clicks go to .plus-icon */
+  height: 100%;
+  background: rgba(0,0,0,0.6); /* semi-transparent overlay */
+  z-index: 9999;             /* very high so it's above everything */
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;             /* center modal-content */
 }
+
+/* Modal content */
+#product-modal .modal-content {
+  background: #fff;
+  max-width: 600px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+}
+
+/* Close button */
+#product-modal .modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
