@@ -29,7 +29,16 @@
     <p class="modal-price"></p>
     <p class="modal-description"></p>
 
-    <form id="variantForm"></form>
+  <form id="variantForm">
+  <!-- Color options container -->
+  <div class="color-options"></div>
+
+  <!-- Size dropdown -->
+  <select class="size-select">
+    <option value="">Select Size</option>
+  </select>
+</form>
+
     <button id="addToCartBtn" class="cta-btn">ADD TO CART</button>
   </div>
 </div>
@@ -81,22 +90,54 @@ document.addEventListener('DOMContentLoaded', function () {
         modal.querySelector('.modal-image').src = data.images[0];
 
         // Build variants
-        variantForm.innerHTML = '';
-        data.variants.forEach((v, i) => {
-          const radio = document.createElement('input');
-          radio.type = 'radio';
-          radio.name = 'variant_id';
-          radio.value = v.id;
-          radio.id = 'var'+v.id;
-          if(i===0) radio.checked = true;
+        // Clear form
+variantForm.querySelector('.color-options').innerHTML = '';
+const sizeSelect = variantForm.querySelector('.size-select');
+sizeSelect.innerHTML = '<option value="">Select Size</option>';
 
-          const label = document.createElement('label');
-          label.htmlFor = 'var'+v.id;
-          label.textContent = v.title;
+// Extract unique colors and sizes from variants
+const colors = [...new Set(data.variants.map(v => v.option1))]; // assuming first option = color
+const sizes = [...new Set(data.variants.map(v => v.option2))]; // assuming second option = size
 
-          variantForm.appendChild(radio);
-          variantForm.appendChild(label);
-        });
+// Add color boxes
+colors.forEach(color => {
+  const div = document.createElement('div');
+  div.className = 'color-box';
+  div.style.background = color.toLowerCase();
+  div.dataset.color = color;
+  div.addEventListener('click', () => {
+    // mark selected
+    variantForm.querySelectorAll('.color-box').forEach(c => c.classList.remove('selected'));
+    div.classList.add('selected');
+
+    // auto-select first matching variant for this color
+    const match = data.variants.find(v => v.option1 === color);
+    if(match) {
+      sizeSelect.value = match.option2;
+      variantForm.dataset.selectedVariant = match.id;
+    }
+  });
+  variantForm.querySelector('.color-options').appendChild(div);
+});
+
+// Add size options
+sizes.forEach(size => {
+  const option = document.createElement('option');
+  option.value = size;
+  option.textContent = size;
+  sizeSelect.appendChild(option);
+});
+
+// On size change, update selected variant
+sizeSelect.addEventListener('change', () => {
+  const selectedColor = variantForm.querySelector('.color-box.selected')?.dataset.color;
+  const match = data.variants.find(v => v.option1 === selectedColor && v.option2 === sizeSelect.value);
+  if(match) variantForm.dataset.selectedVariant = match.id;
+});
+
+// Set default selection
+if(colors.length) variantForm.querySelector('.color-box').click();
+
 
         modal.style.display = 'block';
       } catch(err) {
