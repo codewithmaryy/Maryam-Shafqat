@@ -4464,47 +4464,35 @@ text-component {
   }
 }
 
-/* + icon overlay (unchanged) */
 .grid-item {
-  position: relative;
+  position: relative; /* make + icon relative to this container */
+  overflow: hidden;   /* optional, prevents icon from spilling outside */
 }
-.grid-item .plus-icon {
+
+/* + icon styling */
+.plus-icon {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 20px;
-  height: 20px;
-  background: #ffffff;
-  border-radius: 50%;
+  top: 10px;               /* distance from top of grid item */
+  right: 10px;             /* distance from right */
+  z-index: 1000;           /* very high to stay above image */
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.5);
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
+  border-radius: 50%;
+  user-select: none;
   transition: transform 0.2s ease;
 }
+
+/* Optional hover effect */
 .grid-item:hover .plus-icon {
   transform: scale(1.1);
 }
-
-.grid-item {
-  position: relative; /* make + icon position relative to this */
-}
-
-.plus-icon {
-  position: absolute;
-  top: 10px;          /* adjust as needed */
-  right: 10px;        /* adjust as needed */
-  z-index: 10;        /* make sure it's above image */
-  cursor: pointer;
-  font-size: 24px;
-  background: rgba(0,0,0,0.5);
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 50%;
-  user-select: none;
-}
-
 
 
