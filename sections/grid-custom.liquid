@@ -6,12 +6,12 @@
       {% assign key = "product_" | append: i %}
       {% assign prod = section.settings[key] %}
 
-      <div class="grid-item">
-         {% if prod != blank %}
-    
+     <div class="grid-item">
+  {% if prod != blank %}
+    <div class="product-wrapper">
       <img src="{{ prod.featured_image | image_url: width: 800 }}" alt="{{ prod.title }}">
-    
-    <span class="plus-icon" data-handle="{{ prod.handle }}">+</span>
+      <span class="plus-icon" data-handle="{{ prod.handle }}">+</span>
+    </div>
   {% else %}
     <div class="placeholder">Select product {{ i }}</div>
   {% endif %}
