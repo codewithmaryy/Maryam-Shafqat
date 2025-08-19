@@ -7,7 +7,7 @@
       {% assign prod = section.settings[key] %}
 
       <div class="grid-item">
-  {% if prod != blank %}
+         {% if prod != blank %}
     <a href="{{ prod.url }}">
       <img src="{{ prod.featured_image | image_url: width: 800 }}" alt="{{ prod.title }}">
     </a>
@@ -15,8 +15,7 @@
   {% else %}
     <div class="placeholder">Select product {{ i }}</div>
   {% endif %}
-</div>
-
+      </div>
     {% endfor %}
   </div>
 </section>
