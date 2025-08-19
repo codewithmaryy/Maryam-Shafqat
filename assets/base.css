@@ -4427,14 +4427,14 @@ text-component {
 /* DESKTOP ONLY padding on text block */
 @media (min-width:1024px){
   .banner-row .banner-main.desktop-only{
-    padding-left:96px;
+    padding-left:159px;
   }
     .banner-main:not(.desktop-only){
     display:none;
   }
   .banner-row .banner-main.desktop-only .cta-btn {
   width: auto;                   /* prevents full-width button */
-  max-width: 280px;              /* optional: prevents it from being too wide */
+  max-width: 252px;              /* optional: prevents it from being too wide */
 }
 }
 
