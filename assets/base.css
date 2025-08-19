@@ -4427,6 +4427,9 @@ text-component {
   .banner-row .banner-main.desktop-only{
     padding-left:96px;
   }
+    .banner-main:not(.desktop-only){
+    display:none;
+  }
 }
 
 
