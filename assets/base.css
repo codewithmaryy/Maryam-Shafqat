@@ -4491,8 +4491,12 @@ text-component {
 }
 
 /* Optional hover effect */
-.grid-item:hover .plus-icon {
+
+.product-wrapper:hover .plus-icon {
   transform: scale(1.1);
 }
-
+.product-wrapper {
+  position: relative;
+  display: inline-block;
+}
 
