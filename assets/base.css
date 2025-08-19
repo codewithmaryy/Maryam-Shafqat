@@ -4446,7 +4446,7 @@ text-component {
   gap: 18px;
 }
 .grid-title{
-  margin-top:23px;
+  padding-top:23px;
   text-align:center;
 }
 
