@@ -52,49 +52,65 @@
 {% endschema %}
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  // wait a tiny bit
-  setTimeout(() => {
-    document.querySelectorAll('.plus-icon').forEach(icon => {
-      icon.addEventListener('click', async function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        const handle = this.dataset.handle;
-        if(!handle) return console.error("No handle found");
+document.addEventListener('click', async function(e) {
+  const icon = e.target.closest('.plus-icon');
 
-        try {
-          const res  = await fetch(`/products/${handle}.js`);
-          const data = await res.json();
-          // fill modal...
-          const modal = document.getElementById('product-modal');
-          modal.querySelector('.modal-title').textContent = data.title;
-          modal.querySelector('.modal-price').textContent = Shopify.formatMoney(data.price);
-          modal.querySelector('.modal-description').textContent = data.description;
-          modal.querySelector('.modal-image').src = data.images[0];
+  console.log("Clicked element:", e.target); // See what was clicked
+  if (!icon) {
+    console.log("Not a plus-icon, ignoring click");
+    return;
+  }
 
-          const variantForm = document.getElementById('variantForm');
-          variantForm.innerHTML = '';
-          data.variants.forEach((v, i) => {
-            const radio = document.createElement('input');
-            radio.type = 'radio';
-            radio.name = 'variant_id';
-            radio.value = v.id;
-            radio.id = 'var'+v.id;
-            if(i===0) radio.checked=true;
-            const label = document.createElement('label');
-            label.htmlFor = 'var'+v.id;
-            label.textContent = v.title;
-            variantForm.appendChild(radio);
-            variantForm.appendChild(label);
-          });
+  console.log("Plus icon clicked!", icon);
 
-          modal.style.display = 'block';
-        } catch(err) {
-          console.error("Failed to load product:", err);
-        }
-      });
+  e.preventDefault();
+  e.stopPropagation();
+
+  const handle = icon.dataset.handle;
+  if (!handle) {
+    console.error("No data-handle found on clicked icon!", icon);
+    return;
+  }
+
+  console.log("Fetching product with handle:", handle);
+
+  try {
+    const res = await fetch(`/products/${handle}.js`);
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+    const data = await res.json();
+    console.log("Product data loaded:", data);
+
+    const modal = document.getElementById('product-modal');
+    modal.querySelector('.modal-title').textContent = data.title;
+    modal.querySelector('.modal-price').textContent = Shopify.formatMoney(data.price);
+    modal.querySelector('.modal-description').textContent = data.description;
+    modal.querySelector('.modal-image').src = data.images[0];
+
+    const variantForm = document.getElementById('variantForm');
+    variantForm.innerHTML = '';
+    data.variants.forEach((v, i) => {
+      console.log("Adding variant:", v);
+      const radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = 'variant_id';
+      radio.value = v.id;
+      radio.id = 'var' + v.id;
+      if (i === 0) radio.checked = true;
+
+      const label = document.createElement('label');
+      label.htmlFor = 'var' + v.id;
+      label.textContent = v.title;
+
+      variantForm.appendChild(radio);
+      variantForm.appendChild(label);
     });
-  }, 500); // 0.5s delay ensures section is fully loaded
+
+    console.log("Showing modal");
+    modal.style.display = 'block';
+  } catch (err) {
+    console.error("Failed to load product:", err);
+  }
 });
 
 </script>
