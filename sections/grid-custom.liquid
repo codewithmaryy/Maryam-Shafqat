@@ -8,9 +8,9 @@
 
       <div class="grid-item">
          {% if prod != blank %}
-    <a href="{{ prod.url }}">
+    
       <img src="{{ prod.featured_image | image_url: width: 800 }}" alt="{{ prod.title }}">
-    </a>
+    
     <span class="plus-icon" data-handle="{{ prod.handle }}">+</span>
   {% else %}
     <div class="placeholder">Select product {{ i }}</div>
