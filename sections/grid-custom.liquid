@@ -60,23 +60,27 @@ document.addEventListener('DOMContentLoaded', function () {
   const modal = document.getElementById('product-modal');
   const variantForm = document.getElementById('variantForm');
 
+  // Add click listener to all + icons AFTER DOM loads
   document.querySelectorAll('.plus-icon').forEach(icon => {
     icon.addEventListener('click', async function(e) {
       e.preventDefault();
       e.stopPropagation();
+
       const handle = this.dataset.handle;
+      console.log('Plus icon clicked!', handle); // <-- debug log
       if(!handle) return console.error("No handle found");
 
       try {
         const res = await fetch(`/products/${handle}.js`);
         const data = await res.json();
+        console.log('Product data loaded:', data); // <-- debug log
 
         modal.querySelector('.modal-title').textContent = data.title;
         modal.querySelector('.modal-price').textContent = formatMoney(data.price);
         modal.querySelector('.modal-description').innerHTML = data.description;
         modal.querySelector('.modal-image').src = data.images[0];
 
-        // variants
+        // Build variants
         variantForm.innerHTML = '';
         data.variants.forEach((v, i) => {
           const radio = document.createElement('input');
@@ -84,10 +88,12 @@ document.addEventListener('DOMContentLoaded', function () {
           radio.name = 'variant_id';
           radio.value = v.id;
           radio.id = 'var'+v.id;
-          if(i===0) radio.checked=true;
+          if(i===0) radio.checked = true;
+
           const label = document.createElement('label');
           label.htmlFor = 'var'+v.id;
           label.textContent = v.title;
+
           variantForm.appendChild(radio);
           variantForm.appendChild(label);
         });
@@ -99,16 +105,17 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // close modal
+  // Close modal
   modal.querySelector('.modal-close').addEventListener('click', () => modal.style.display = 'none');
-  window.addEventListener('click', (e) => { if(e.target===modal) modal.style.display='none'; });
+  window.addEventListener('click', e => { if(e.target === modal) modal.style.display = 'none'; });
 
-  // add to cart
+  // Add to cart
   document.getElementById('addToCartBtn').addEventListener('click', async function(e){
     e.preventDefault();
     const formData = new FormData(variantForm);
     const variantId = formData.get('variant_id');
     if(!variantId) return alert("Please select a variant!");
+
     try {
       await fetch('/cart/add.js', {
         method:'POST',
@@ -122,8 +129,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
-document.querySelectorAll('.plus-icon').forEach(icon => {
-  icon.addEventListener('click', () => console.log('Plus icon clicked!', icon.dataset.handle));
-});
 </script>
+
 
