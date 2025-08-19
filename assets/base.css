@@ -4413,7 +4413,7 @@ text-component {
     content:"SHOP NOW →";
     position:absolute;
     left:50%;
-    bottom:25px;
+    bottom:65px;
     transform:translateX(-50%);
     background:#000;
     color:#fff;
