@@ -4359,7 +4359,6 @@ text-component {
   font-size:12px;
   background:#eee;
   padding:10px 0;
-  margin-top:30px;
 }
 
 /* hover animation for both buttons */
@@ -4410,12 +4409,15 @@ text-component {
   }
 
   /* CTA button overlay (mobile only) */
-  .cta-btn.mobile-overlay-btn{
-    display:block;
+    .first-frame::after{
+    content:"SHOP NOW →";
     position:absolute;
     left:50%;
     bottom:25px;
     transform:translateX(-50%);
+    background:#000;
+    color:#fff;
+    padding:12px 30px;
   }
 
   .banner-row  { flex-direction:column; margin-top:0; }
