@@ -4502,4 +4502,35 @@ text-component {
   border: none;
   cursor: pointer;
 }
+/* Product wrapper */
+.product-wrapper {
+  position: relative; /* relative container for absolute + icon */
+  display: inline-block; /* keeps image layout intact */
+}
+
+/* + icon overlay */
+.plus-icon {
+  position: absolute;   /* position relative to .product-wrapper */
+  top: 10px;            /* distance from top of image */
+  right: 10px;          /* distance from right of image */
+  z-index: 10;          /* above image */
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(0,0,0,0.5);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s ease;
+}
+
+/* Optional hover effect */
+.product-wrapper:hover .plus-icon {
+  transform: scale(1.1);
+}
 
