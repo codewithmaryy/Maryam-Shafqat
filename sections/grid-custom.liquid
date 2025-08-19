@@ -122,5 +122,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+document.querySelectorAll('.plus-icon').forEach(icon => {
+  icon.addEventListener('click', () => console.log('Plus icon clicked!', icon.dataset.handle));
+});
 </script>
 
