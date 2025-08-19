@@ -4488,6 +4488,23 @@ text-component {
   transform: scale(1.1);
 }
 
+.grid-item {
+  position: relative; /* make + icon position relative to this */
+}
+
+.plus-icon {
+  position: absolute;
+  top: 10px;          /* adjust as needed */
+  right: 10px;        /* adjust as needed */
+  z-index: 10;        /* make sure it's above image */
+  cursor: pointer;
+  font-size: 24px;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 50%;
+  user-select: none;
+}
 
 
 
