@@ -4445,6 +4445,10 @@ text-component {
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;
 }
+.grid-title{
+  margin-top:23px;
+  text-align:center;
+}
 
 /* 2 columns on tablet */
 @media (max-width:1023px) {
