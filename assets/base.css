@@ -4439,5 +4439,51 @@ text-component {
 }
 
 
+/* ----- default (desktop) ----- */
+.grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+/* 2 columns on tablet */
+@media (max-width:1023px) {
+  .grid-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 1 column on small mobile */
+@media (max-width:599px) {
+  .grid-wrapper {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+/* + icon overlay (unchanged) */
+.grid-item {
+  position: relative;
+}
+.grid-item .plus-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  background: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.grid-item:hover .plus-icon {
+  transform: scale(1.1);
+}
+
+
 
 
