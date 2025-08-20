@@ -75,102 +75,103 @@ document.addEventListener('DOMContentLoaded', function () {
   const modal = document.getElementById('product-modal');
   const variantForm = document.getElementById('variantForm');
 
-  // Add click listener to all + icons AFTER DOM loads
   document.querySelectorAll('.plus-icon').forEach(icon => {
     icon.addEventListener('click', async function(e) {
       e.preventDefault();
       e.stopPropagation();
 
       const handle = this.dataset.handle;
-      console.log('Plus icon clicked!', handle); // <-- debug log
-      if(!handle) return console.error("No handle found");
+      if (!handle) return console.error("No handle found");
 
       try {
         const res = await fetch(`/products/${handle}.js`);
         const data = await res.json();
-        console.log('Product data loaded:', data); // <-- debug log
 
+        // Fill modal content
         modal.querySelector('.modal-title').textContent = data.title;
         modal.querySelector('.modal-price').textContent = formatMoney(data.price);
         modal.querySelector('.modal-description').innerHTML = data.description;
         modal.querySelector('.modal-image').src = data.images[0];
 
-        // Build variants
-        // Clear form
-// Clear previous options
-const colorContainer = variantForm.querySelector('.color-options');
-colorContainer.innerHTML = '';
-const sizeSelect = variantForm.querySelector('.size-select');
-sizeSelect.innerHTML = '<option value="">Select Size</option>';
+        // Clear previous variants
+        const colorContainer = variantForm.querySelector('.color-options');
+        colorContainer.innerHTML = '';
+        const sizeSelect = variantForm.querySelector('.size-select');
+        sizeSelect.innerHTML = '<option value="">Select Size</option>';
 
-// Fixed colors with label classes
-const fixedColors = [
-  {name: "Black", class: "black"},
-  {name: "White", class: "white"}
-];
+        // Fixed colors (you can adjust)
+        const fixedColors = [
+          { name: "Black", class: "black" },
+          { name: "White", class: "white" }
+        ];
 
-fixedColors.forEach(c => {
-  const div = document.createElement('div');
-  div.className = 'color-box ' + c.class;
-  div.textContent = c.name;      // show text inside box
-  div.dataset.color = c.name;
-  div.addEventListener('click', () => {
-    colorContainer.querySelectorAll('.color-box').forEach(b => b.classList.remove('selected'));
-    div.classList.add('selected');
-    variantForm.dataset.selectedColor = c.name;
-    updateSelectedVariant();
-  });
-  colorContainer.appendChild(div);
-});
+        // Determine which option is color/size dynamically
+        const optionCounts = [
+          new Set(data.variants.map(v => v.option1)).size,
+          new Set(data.variants.map(v => v.option2)).size
+        ];
 
-// Determine which option is size
-let sizeOptionIndex = 1; // default to option2
-const optionCounts = [
-  new Set(data.variants.map(v => v.option1)).size,
-  new Set(data.variants.map(v => v.option2)).size
-];
+        let colorOptionIndex = 0;
+        let sizeOptionIndex = 1;
 
-// If option1 has more than 2 values, it's likely size
-if(optionCounts[0] > 2) sizeOptionIndex = 0;
-if(optionCounts[1] > 2) sizeOptionIndex = 1;
+        if(optionCounts[0] > 2) {
+          sizeOptionIndex = 0;
+          colorOptionIndex = 1;
+        }
 
-// Populate size dropdown from detected option
-const sizes = [...new Set(data.variants.map(v => v['option' + (sizeOptionIndex+1)]))];
-sizes.forEach(size => {
-  const option = document.createElement('option');
-  option.value = size;
-  option.textContent = size;
-  sizeSelect.appendChild(option);
-});
+        // Build color options
+        fixedColors.forEach(c => {
+          const div = document.createElement('div');
+          div.className = 'color-box ' + c.class;
+          div.textContent = c.name;
+          div.dataset.color = c.name;
 
+          div.addEventListener('click', () => {
+            colorContainer.querySelectorAll('.color-box').forEach(b => b.classList.remove('selected'));
+            div.classList.add('selected');
+            variantForm.dataset.selectedColor = c.name;
+            updateSelectedVariant();
+          });
 
-// Default selection
-colorContainer.querySelector('.color-box').click();
-if(sizes.length) sizeSelect.value = sizes[0];
-variantForm.dataset.selectedSize = sizes[0];
+          colorContainer.appendChild(div);
+        });
 
-// Function to set selected variant based on color + size
-function updateSelectedVariant() {
-  const selectedColor = variantForm.dataset.selectedColor;
-  const selectedSize = variantForm.dataset.selectedSize;
+        // Build size dropdown from variants
+        const sizes = [...new Set(data.variants.map(v => v['option' + (sizeOptionIndex + 1)]))];
+        sizes.forEach(size => {
+          const option = document.createElement('option');
+          option.value = size;
+          option.textContent = size;
+          sizeSelect.appendChild(option);
+        });
 
-  // Find the matching variant from product data
-  const match = data.variants.find(v => 
-    v.option1.toLowerCase() === selectedColor.toLowerCase() &&
-    v.option2.toLowerCase() === (selectedSize || "").toLowerCase()
-  );
+        // Default selections
+        colorContainer.querySelector('.color-box').click();
+        if(sizes.length) sizeSelect.value = sizes[0];
+        variantForm.dataset.selectedSize = sizes[0];
 
-  if(match) {
-    // Set the selected variant ID in dataset
-    variantForm.dataset.selectedVariant = match.id;
+        // Update selected variant when size changes
+        sizeSelect.addEventListener('change', () => {
+          variantForm.dataset.selectedSize = sizeSelect.value;
+          updateSelectedVariant();
+        });
 
-    // Optional: if you want, you can also update a hidden input
-    // document.getElementById('variant_id').value = match.id;
-  }
-}
+        // Function to set selected variant based on selected color & size
+        function updateSelectedVariant() {
+          const selectedColor = variantForm.dataset.selectedColor;
+          const selectedSize = variantForm.dataset.selectedSize;
 
+          const match = data.variants.find(v =>
+            v['option' + (colorOptionIndex + 1)].toLowerCase() === selectedColor.toLowerCase() &&
+            v['option' + (sizeOptionIndex + 1)].toLowerCase() === (selectedSize || "").toLowerCase()
+          );
 
+          if(match) {
+            variantForm.dataset.selectedVariant = match.id;
+          }
+        }
 
+        // Show modal after everything is ready
         modal.style.display = 'block';
       } catch(err) {
         console.error("Failed to load product:", err);
@@ -182,29 +183,27 @@ function updateSelectedVariant() {
   modal.querySelector('.modal-close').addEventListener('click', () => modal.style.display = 'none');
   window.addEventListener('click', e => { if(e.target === modal) modal.style.display = 'none'; });
 
- document.getElementById('addToCartBtn').addEventListener('click', async function(e){
-  e.preventDefault();
+  // Add to cart
+  document.getElementById('addToCartBtn').addEventListener('click', async function(e){
+    e.preventDefault();
+    const variantId = variantForm.dataset.selectedVariant;
 
-  // Read selected variant from dataset
-  const variantId = variantForm.dataset.selectedVariant;
+    if(!variantId) {
+      return alert("Please select a variant!");
+    }
 
-  if(!variantId) {
-    return alert("Please select a variant!");
-  }
+    try {
+      await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ quantity: 1, id: variantId })
+      });
+      alert("Product added to cart!");
+      modal.style.display = 'none';
+    } catch(err) {
+      console.error("Add to cart failed:", err);
+    }
+  });
 
-  try {
-    await fetch('/cart/add.js', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ quantity: 1, id: variantId })
-    });
-    alert("Product added to cart!");
-    modal.style.display = 'none';
-  } catch(err) {
-    console.error("Add to cart failed:", err);
-  }
 });
-
 </script>
-
-
