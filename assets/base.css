@@ -4509,6 +4509,10 @@ text-component {
 .modal-container{
   display:flex;
 }
+.product-details{
+  display:flex;
+  flex-direction: column;
+}
 /* Modal image */
 #product-modal .modal-image {
   width: 100%;
