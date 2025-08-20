@@ -93,36 +93,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Build variants
         // Clear form
-variantForm.querySelector('.color-options').innerHTML = '';
+// Clear previous options
+const colorContainer = variantForm.querySelector('.color-options');
+colorContainer.innerHTML = '';
 const sizeSelect = variantForm.querySelector('.size-select');
 sizeSelect.innerHTML = '<option value="">Select Size</option>';
 
-// Extract unique colors and sizes from variants
-const colors = [...new Set(data.variants.map(v => v.option1))]; // assuming first option = color
-const sizes = [...new Set(data.variants.map(v => v.option2))]; // assuming second option = size
+// Get unique colors and sizes from variants
+const colors = [...new Set(data.variants.map(v => v.option1))];
+const sizes = [...new Set(data.variants.map(v => v.option2))];
 
-// Add color boxes
+// Create color boxes
 colors.forEach(color => {
   const div = document.createElement('div');
   div.className = 'color-box';
   div.style.background = color.toLowerCase();
   div.dataset.color = color;
   div.addEventListener('click', () => {
-    // mark selected
-    variantForm.querySelectorAll('.color-box').forEach(c => c.classList.remove('selected'));
+    colorContainer.querySelectorAll('.color-box').forEach(c => c.classList.remove('selected'));
     div.classList.add('selected');
-
-    // auto-select first matching variant for this color
-    const match = data.variants.find(v => v.option1 === color);
-    if(match) {
-      sizeSelect.value = match.option2;
-      variantForm.dataset.selectedVariant = match.id;
-    }
+    variantForm.dataset.selectedColor = color;
+    updateSelectedVariant();
   });
-  variantForm.querySelector('.color-options').appendChild(div);
+  colorContainer.appendChild(div);
 });
 
-// Add size options
+// Populate size dropdown
 sizes.forEach(size => {
   const option = document.createElement('option');
   option.value = size;
@@ -130,15 +126,27 @@ sizes.forEach(size => {
   sizeSelect.appendChild(option);
 });
 
-// On size change, update selected variant
-sizeSelect.addEventListener('change', () => {
-  const selectedColor = variantForm.querySelector('.color-box.selected')?.dataset.color;
-  const match = data.variants.find(v => v.option1 === selectedColor && v.option2 === sizeSelect.value);
-  if(match) variantForm.dataset.selectedVariant = match.id;
-});
+// Size change event
+sizeSelect.onchange = () => {
+  variantForm.dataset.selectedSize = sizeSelect.value;
+  updateSelectedVariant();
+};
 
-// Set default selection
-if(colors.length) variantForm.querySelector('.color-box').click();
+// Default selection: first color and first size
+if(colors.length) colorContainer.querySelector('.color-box').click();
+if(sizes.length) sizeSelect.value = sizes[0];
+variantForm.dataset.selectedSize = sizes[0];
+
+// Function to set selected variant based on color + size
+function updateSelectedVariant() {
+  const selectedColor = variantForm.dataset.selectedColor;
+  const selectedSize = variantForm.dataset.selectedSize;
+  const match = data.variants.find(v => 
+    v.option1.toLowerCase() === selectedColor.toLowerCase() &&
+    v.option2.toLowerCase() === (selectedSize || "").toLowerCase()
+  );
+  if(match) variantForm.dataset.selectedVariant = match.id;
+}
 
 
         modal.style.display = 'block';
