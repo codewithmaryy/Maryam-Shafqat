@@ -4630,7 +4630,6 @@ text-component {
 
 .color-options {
   display: flex;
-  gap: 15px;       /* space between boxes */
   margin-bottom: 15px;
 }
 
@@ -4650,7 +4649,6 @@ text-component {
 
 
 
-.color-box.black { background: #000; }
-.color-box.white { background: #fff; color: #000; }
+
 
 
