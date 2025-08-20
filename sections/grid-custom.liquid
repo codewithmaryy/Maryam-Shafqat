@@ -153,12 +153,22 @@ variantForm.dataset.selectedSize = sizes[0];
 function updateSelectedVariant() {
   const selectedColor = variantForm.dataset.selectedColor;
   const selectedSize = variantForm.dataset.selectedSize;
+
+  // Find the matching variant from product data
   const match = data.variants.find(v => 
     v.option1.toLowerCase() === selectedColor.toLowerCase() &&
     v.option2.toLowerCase() === (selectedSize || "").toLowerCase()
   );
-  if(match) variantForm.dataset.selectedVariant = match.id;
+
+  if(match) {
+    // Set the selected variant ID in dataset
+    variantForm.dataset.selectedVariant = match.id;
+
+    // Optional: if you want, you can also update a hidden input
+    // document.getElementById('variant_id').value = match.id;
+  }
 }
+
 
 
         modal.style.display = 'block';
