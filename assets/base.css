@@ -4508,6 +4508,7 @@ text-component {
 }
 .modal-container{
   display:flex;
+  gap:14px;
 }
 .product-details{
   display:flex;
@@ -4515,7 +4516,7 @@ text-component {
 }
 /* Modal image */
 #product-modal .modal-image {
-  width: 100%;
+  width: 168px;
   height: auto;
   object-fit: cover;
   border-radius: 4px;
