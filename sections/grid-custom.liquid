@@ -99,32 +99,27 @@ colorContainer.innerHTML = '';
 const sizeSelect = variantForm.querySelector('.size-select');
 sizeSelect.innerHTML = '<option value="">Select Size</option>';
 
-// Map the product colors to CSS colors
-const colorMap = {
-  "Black": "#000000",
-  "White": "#ffffff"
-};
+// Hardcode black and white boxes
+const fixedColors = [
+  {name: "Black", color: "#000000"},
+  {name: "White", color: "#ffffff"}
+];
 
-// Get unique colors from variants
-const colors = [...new Set(data.variants.map(v => v.option1))];
-
-// Create color boxes
-colors.forEach(color => {
+fixedColors.forEach(c => {
   const div = document.createElement('div');
   div.className = 'color-box';
-  // Use mapped CSS color or fallback to gray
-  div.style.background = colorMap[color] || "#ccc";
-  div.dataset.color = color;
+  div.style.background = c.color;
+  div.dataset.color = c.name;
   div.addEventListener('click', () => {
-    colorContainer.querySelectorAll('.color-box').forEach(c => c.classList.remove('selected'));
+    colorContainer.querySelectorAll('.color-box').forEach(b => b.classList.remove('selected'));
     div.classList.add('selected');
-    variantForm.dataset.selectedColor = color;
+    variantForm.dataset.selectedColor = c.name;
     updateSelectedVariant();
   });
   colorContainer.appendChild(div);
 });
 
-// Populate size dropdown
+// Populate size dropdown from variants
 const sizes = [...new Set(data.variants.map(v => v.option2))];
 sizes.forEach(size => {
   const option = document.createElement('option');
@@ -139,8 +134,8 @@ sizeSelect.onchange = () => {
   updateSelectedVariant();
 };
 
-// Default selection: first color and first size
-if(colors.length) colorContainer.querySelector('.color-box').click();
+// Default selection
+colorContainer.querySelector('.color-box').click();
 if(sizes.length) sizeSelect.value = sizes[0];
 variantForm.dataset.selectedSize = sizes[0];
 
