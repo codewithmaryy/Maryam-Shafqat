@@ -4541,27 +4541,18 @@ text-component {
 #variantForm {
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 /* Color options as boxes */
 .color-options {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
 }
 
 .color-box {
   width: 30px;
   height: 30px;
-  border-radius: 4px;
   border: 2px solid #ccc;
   cursor: pointer;
   transition: transform 0.2s ease, border-color 0.2s ease;
-}
-
-.color-box.selected {
-  border-color: #000;
-  transform: scale(1.1);
 }
 
 /* Size dropdown */
@@ -4631,5 +4622,35 @@ text-component {
 .product-wrapper:hover .plus-icon {
   transform: scale(1.1);
 }
+.variant-label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.color-options {
+  display: flex;
+  gap: 15px;       /* space between boxes */
+  margin-bottom: 15px;
+}
+
+.color-box {
+  flex: 1;              /* make boxes equally wide */
+  height: 60px;         /* bigger height */
+  border: 2px solid #ccc;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+       /* text color inside box */
+  font-size: 16px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+
+
+.color-box.black { background: #000; }
+.color-box.white { background: #fff; color: #000; }
 
 
