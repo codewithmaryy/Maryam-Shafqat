@@ -175,20 +175,22 @@ function updateSelectedVariant() {
   // Add to cart
   document.getElementById('addToCartBtn').addEventListener('click', async function(e){
     e.preventDefault();
-   const variantId = variantForm.dataset.selectedVariant;
-  if(!variantId) return alert("Please select a variant!");
+    const formData = new FormData(variantForm);
+    const variantId = formData.get('variant_id');
+    if(!variantId) return alert("Please select a variant!");
 
-  try {
-    await fetch('/cart/add.js', {
-      method:'POST',
-      headers:{ 'Content-Type':'application/json' },
-      body: JSON.stringify({ quantity:1, id:variantId })
-    });
-    alert("Product added to cart!");
-    modal.style.display = 'none';
-  } catch(err) {
-    console.error("Add to cart failed:", err);
-  }
+    try {
+      await fetch('/cart/add.js', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({ quantity:1, id:variantId })
+      });
+      alert("Product added to cart!");
+      modal.style.display = 'none';
+    } catch(err) {
+      console.error("Add to cart failed:", err);
+    }
+  });
 });
 </script>
 
