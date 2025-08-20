@@ -4506,7 +4506,9 @@ text-component {
   border: none;
   cursor: pointer;
 }
-
+.modal-container{
+  display:flex;
+}
 /* Modal image */
 #product-modal .modal-image {
   width: 100%;
