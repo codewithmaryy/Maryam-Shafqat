@@ -120,8 +120,19 @@ fixedColors.forEach(c => {
   colorContainer.appendChild(div);
 });
 
-// Populate size dropdown from variants
-const sizes = [...new Set(data.variants.map(v => v.option2))];
+// Determine which option is size
+let sizeOptionIndex = 1; // default to option2
+const optionCounts = [
+  new Set(data.variants.map(v => v.option1)).size,
+  new Set(data.variants.map(v => v.option2)).size
+];
+
+// If option1 has more than 2 values, it's likely size
+if(optionCounts[0] > 2) sizeOptionIndex = 0;
+if(optionCounts[1] > 2) sizeOptionIndex = 1;
+
+// Populate size dropdown from detected option
+const sizes = [...new Set(data.variants.map(v => v['option' + (sizeOptionIndex+1)]))];
 sizes.forEach(size => {
   const option = document.createElement('option');
   option.value = size;
@@ -129,11 +140,6 @@ sizes.forEach(size => {
   sizeSelect.appendChild(option);
 });
 
-// Size change event
-sizeSelect.onchange = () => {
-  variantForm.dataset.selectedSize = sizeSelect.value;
-  updateSelectedVariant();
-};
 
 // Default selection
 colorContainer.querySelector('.color-box').click();
