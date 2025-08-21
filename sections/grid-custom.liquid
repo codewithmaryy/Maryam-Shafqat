@@ -192,12 +192,11 @@ document.addEventListener('DOMContentLoaded', function () {
  // Add to Cart
 document.getElementById('addToCartBtn').addEventListener('click', async function(e){
     e.preventDefault();
-    const variantId = variantForm.dataset.selectedVariant;
-
+    const variantId = variantForm.dataset.selectedVariant; // Selected variant of main product
     if(!variantId) return alert("Please select a variant!");
 
     try {
-        // Add product to Shopify cart
+        // Add selected product to cart
         const response = await fetch('/cart/add.js', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -208,6 +207,19 @@ document.getElementById('addToCartBtn').addEventListener('click', async function
         if(result && result.id){
             alert("Product added to cart!");
             modal.style.display = 'none';
+
+            // ✅ Check if selected product is Black + Medium
+            const variantTitle = result.variant_title?.toLowerCase() || "";
+            if(variantTitle.includes("black") && variantTitle.includes("medium")){
+                // 👉 Replace this with Soft Winter Jacket's Black Medium variant ID
+                const softWinterJacketVariantId = "51272109031655";
+
+                await fetch('/cart/add.js', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ quantity: 1, id: softWinterJacketVariantId })
+                });
+            }
 
             // Fetch updated cart
             const cartResponse = await fetch('/cart.js');
@@ -220,10 +232,9 @@ document.getElementById('addToCartBtn').addEventListener('click', async function
             // Update cart drawer items instantly
             const cartDrawer = document.querySelector('.cart-drawer-component');
             if(cartDrawer){
-                const itemsContainer = cartDrawer.querySelector('.cart-items'); // Make sure this element exists
+                const itemsContainer = cartDrawer.querySelector('.cart-items');
                 if(itemsContainer){
-                    itemsContainer.innerHTML = ''; // Clear old items
-
+                    itemsContainer.innerHTML = '';
                     cart.items.forEach(item => {
                         const div = document.createElement('div');
                         div.className = 'cart-item';
@@ -239,7 +250,7 @@ document.getElementById('addToCartBtn').addEventListener('click', async function
                     });
                 }
 
-                // Optionally open the cart drawer automatically
+                // Optional: open cart drawer automatically
                 const cartButton = document.querySelector('.header-actions__action .header-actions__cart-icon');
                 if(cartButton) cartButton.click();
             }
