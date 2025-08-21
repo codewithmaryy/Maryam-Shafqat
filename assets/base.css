@@ -4447,6 +4447,7 @@ text-component {
   padding-top:23px;
   padding-left:12px;
   font-weight:300
+  font-size: xx-large;
 }
 
 /* 2 columns on tablet */
@@ -4460,6 +4461,9 @@ text-component {
 @media (max-width:599px) {
   .grid-wrapper {
     grid-template-columns: repeat(1, 1fr);
+  }
+  .grid-title{
+    text-align: center;
   }
 }
 
