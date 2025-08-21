@@ -189,14 +189,15 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('click', e => { if(e.target === modal) modal.style.display = 'none'; });
 
   // Add to Cart
-  document.getElementById('addToCartBtn').addEventListener('click', async function(e){
+ // Add to Cart
+document.getElementById('addToCartBtn').addEventListener('click', async function(e){
     e.preventDefault();
     const variantId = variantForm.dataset.selectedVariant;
 
     if(!variantId) return alert("Please select a variant!");
 
     try {
-        // 1️⃣ Add product to Shopify cart
+        // Add product to Shopify cart
         const response = await fetch('/cart/add.js', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -208,18 +209,13 @@ document.addEventListener('DOMContentLoaded', function () {
             alert("Product added to cart!");
             modal.style.display = 'none';
 
-            // 2️⃣ Fetch updated cart
+            // Fetch updated cart
             const cartResponse = await fetch('/cart.js');
             const cart = await cartResponse.json();
 
-            // 3️⃣ Update cart icon count
-            const countElem = document.querySelector('.cart-count');
-            if(countElem) countElem.textContent = cart.item_count;
-
-            // 4️⃣ Optional: update mini cart drawer if exists
-            if(typeof window.updateCartDrawer === "function") {
-                window.updateCartDrawer(cart); // some themes provide this function
-            }
+            // Update cart bubble count
+            const cartText = document.querySelector('.cart-bubble__text');
+            if(cartText) cartText.textContent = cart.item_count;
 
         } else {
             alert("Failed to add product to cart. Please try again.");
@@ -230,6 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
         alert("Error adding product to cart. Check console for details.");
     }
 });
+
 });
 </script>
 
