@@ -4445,7 +4445,8 @@ text-component {
 }
 .grid-title{
   padding-top:23px;
-  text-align:center;
+  padding-left:12px;
+  font-weight:300
 }
 
 /* 2 columns on tablet */
