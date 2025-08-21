@@ -4279,6 +4279,7 @@ text-component {
   }
 }
 
+
 /* =======================
    BANNER (default desktop)
    ======================= */
@@ -4355,7 +4356,7 @@ text-component {
   font-size:12px;
   background:#eee;
   padding:10px 0;
-}
+
 
 /* hover animation for both buttons */
 .primary-btn.animate,
@@ -4652,3 +4653,9 @@ text-component {
   font-size: 16px;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
+
+
+
+
+
+
