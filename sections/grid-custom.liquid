@@ -225,7 +225,7 @@ document.getElementById('addToCartBtn').addEventListener('click', async function
             const cartResponse = await fetch('/cart.js');
             const cart = await cartResponse.json();
 
-            // Update cart bubble count
+            
            // Update cart bubble count
 const cartText = document.querySelector('[ref="cartBubbleText"]');
 if (cartText) cartText.textContent = cart.item_count;
