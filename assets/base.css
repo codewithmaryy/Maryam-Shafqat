@@ -4486,7 +4486,6 @@ text-component {
   max-width: 400px; /* match screenshot size */
   width: 100%;
   padding: 20px;
-  border-radius: 8px;
   position: relative;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   display: flex;
@@ -4591,6 +4590,7 @@ text-component {
   cursor: pointer;
   border-radius: 4px;
   transition: background 0.2s ease;
+  margin-top:35px;
 }
 
 #addToCartBtn:hover {
