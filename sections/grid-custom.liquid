@@ -192,30 +192,44 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('addToCartBtn').addEventListener('click', async function(e){
     e.preventDefault();
     const variantId = variantForm.dataset.selectedVariant;
-    console.log("Adding to cart variant ID:", variantId);
 
     if(!variantId) return alert("Please select a variant!");
 
     try {
-      const response = await fetch('/cart/add.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ quantity: 1, id: variantId })
-      });
-      const result = await response.json();
-      console.log("Add to cart result:", result);
+        // 1️⃣ Add product to Shopify cart
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ quantity: 1, id: variantId })
+        });
+        const result = await response.json();
 
-      if(result && result.id) {
-        alert("Product added to cart!");
-        modal.style.display = 'none';
-      } else {
-        alert("Failed to add product to cart. Please try again.");
-      }
+        if(result && result.id){
+            alert("Product added to cart!");
+            modal.style.display = 'none';
+
+            // 2️⃣ Fetch updated cart
+            const cartResponse = await fetch('/cart.js');
+            const cart = await cartResponse.json();
+
+            // 3️⃣ Update cart icon count
+            const countElem = document.querySelector('.cart-count');
+            if(countElem) countElem.textContent = cart.item_count;
+
+            // 4️⃣ Optional: update mini cart drawer if exists
+            if(typeof window.updateCartDrawer === "function") {
+                window.updateCartDrawer(cart); // some themes provide this function
+            }
+
+        } else {
+            alert("Failed to add product to cart. Please try again.");
+        }
+
     } catch(err) {
-      console.error("Add to cart failed:", err);
-      alert("Error adding product to cart. Check console for details.");
+        console.error("Add to cart failed:", err);
+        alert("Error adding product to cart. Check console for details.");
     }
-  });
+});
 });
 </script>
 
