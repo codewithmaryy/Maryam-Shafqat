@@ -4279,67 +4279,376 @@ text-component {
   }
 }
 
-.assessment-banner{
-  background-size: cover;
-  background-position: center;
-  padding: 40px 60px;
-  display: flex;
-  flex-direction: column;
-  gap: 45px;
-}
+/* =======================
+   BANNER (default desktop)
+   ======================= */
 
-.banner-top{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.banner-top {
+  background:#f5f5f5;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 20px;
 }
-
-.banner-logo{
+.hamburger {
+  display:none;
+  font-size:22px;
+  cursor:pointer;
+}
+.banner-logo {
   font-weight:600;
   font-size:20px;
 }
-
-.banner-tagline{
+.banner-tagline {
   font-size:15px;
 }
-
-.primary-btn{
-  background: #FFD400;
-  padding: 10px 28px;
-  font-size:14px;
+.primary-btn {
+  background:#FFD400;
+  padding:10px 28px;
   border:none;
   cursor:pointer;
-  transition:.3s;
 }
 
-.primary-btn.animate,
-.cta-btn.animate{
-  transform: scale(1.05);
+.banner-main.desktop-only {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
-
-.banner-main h1{
-  font-size:60px;
-  font-weight:800;
+.banner-heading {
+  font-size:42px;
+  font-weight:500;
 }
-
-.banner-subtext{
-  max-width:500px;
-  margin:12px 0;
+.banner-subtext {
+  margin:15px 0;
+  max-width:460px;
 }
-
-.cta-btn{
-  background: #000;
+.cta-btn {
+  background:#000;
   color:#fff;
-  padding:14px 35px;
-  font-size:14px;
   border:none;
+  padding:14px 36px;
   cursor:pointer;
-  transition:.3s;
 }
 
-.banner-note{
+.first-frame {
+  background-size:cover;
+  background-position:center;
+  min-height:550px;
+}
+
+.banner-row {
+  display:flex;
+  gap:40px;
+  margin-top:40px;
+}
+
+.second-frame {
+  flex:1;
+  min-height:419px;
+  background-size:cover;
+  background-position:center;
+}
+
+.banner-note {
   text-align:center;
-  padding:10px 0;
   font-size:12px;
   background:#eee;
+  padding:10px 0;
+}
+
+/* hover animation for both buttons */
+.primary-btn.animate,
+.cta-btn.animate {
+  transform:scale(1.05);
+  transition:transform 0.2s ease-in-out;
+}
+
+/* ===========================
+   MOBILE / RESPONSIVE STYLES
+   =========================== */
+@media (max-width:1023px){
+
+  .hamburger     { display:block; }
+  .banner-tagline{ display:none;  }
+  .primary-btn   { display:none;  }
+
+  /* center “Tisso Vision“ */
+  .banner-logo{
+    margin-left:auto;
+    margin-right:auto;
+    font-size:18px;
+    font-weight:600;
+  }
+
+  /* show mobile heading+text */
+  .banner-main:not(.desktop-only){
+    text-align:center;
+    margin-top:45px;
+  }
+  .banner-main:not(.desktop-only) .banner-heading{
+    margin-bottom:0;
+    font-size:32px;
+  }
+  .banner-main:not(.desktop-only) .banner-subtext{
+    max-width:340px;
+    margin:22px auto 0;
+  }
+
+  /* hide desktop version */
+  .banner-main.desktop-only { display:none; }
+
+  .first-frame{
+    position:relative;
+    min-height:380px;
+    margin-top:30px;
+  }
+
+  /* CTA button overlay (mobile only) */
+    .first-frame::after{
+    content:"SHOP NOW →";
+    position:absolute;
+    left:50%;
+    bottom:65px;
+    transform:translateX(-50%);
+    background:#000;
+    color:#fff;
+    padding:12px 30px;
+  }
+
+  .banner-row  { flex-direction:column; margin-top:0; }
+  .second-frame{ display:none; }
+}
+
+/* DESKTOP ONLY padding on text block */
+@media (min-width:1024px){
+  .banner-row .banner-main.desktop-only{
+    padding-left:159px;
+  }
+    .banner-main:not(.desktop-only){
+    display:none;
+  }
+  .banner-row .banner-main.desktop-only .cta-btn {
+  width: auto;                   /* prevents full-width button */
+  max-width: 252px;              /* optional: prevents it from being too wide */
+}
+}
+
+
+/* ----- default (desktop) ----- */
+.grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.grid-title{
+  padding-top:23px;
+  padding-left:12px;
+  font-weight:300;
+  font-size: xx-large;
+}
+
+/* 2 columns on tablet */
+@media (max-width:1023px) {
+  .grid-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 1 column on small mobile */
+@media (max-width:599px) {
+  .grid-wrapper {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .grid-title{
+    text-align: center;
+  }
+}
+
+/* Modal overlay */
+#product-modal {
+  display: none; /* hidden by default */
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6); /* semi-transparent background */
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+}
+
+/* Modal content box */
+#product-modal .modal-content {
+  background: #fff;
+  max-width: 400px; /* match screenshot size */
+  width: 100%;
+  padding: 20px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Close button */
+#product-modal .modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.modal-container{
+  display:flex;
+  gap:14px;
+}
+.product-details{
+  display:flex;
+  flex-direction: column;
+}
+/* Modal image */
+#product-modal .modal-image {
+  width: 168px;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Modal title */
+#product-modal .modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Modal price */
+#product-modal .modal-price {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+}
+
+/* Modal description */
+#product-modal .modal-description {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* Variant form */
+#variantForm {
+  display: flex;
+  flex-direction: column;
+}
+/* Color options as boxes */
+.color-options {
+  display: flex;
+}
+
+.color-box {
+  width: 30px;
+  height: 30px;
+  border: 2px solid #ccc;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+/* Size dropdown */
+.size-select {
+  margin-top: 10px;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  outline: none;
+  cursor: pointer;
+}
+
+
+#variantForm label {
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+
+
+/* Add to cart button */
+#addToCartBtn {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+  margin-top:35px;
+}
+
+#addToCartBtn:hover {
+  background: #333;
+}
+
+/* Grid product + icon overlay */
+.product-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.plus-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(0,0,0,0.5);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s ease;
+}
+
+.product-wrapper:hover .plus-icon {
+  transform: scale(1.1);
+}
+.variant-label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.color-options {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.color-box {
+  flex: 1;              /* make boxes equally wide */
+  height: 60px;         /* bigger height */
+  border: 2px solid #ccc;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+       /* text color inside box */
+  font-size: 16px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }

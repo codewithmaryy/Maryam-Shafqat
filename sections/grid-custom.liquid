@@ -1,0 +1,276 @@
+<section class="custom-grid">
+  <h2 class="grid-title">Tisso vision in the wild</h2>
+
+  <div class="grid-wrapper">
+    {% for i in (1..6) %}
+      {% assign key = "product_" | append: i %}
+      {% assign prod = section.settings[key] %}
+
+     <div class="grid-item">
+  {% if prod != blank %}
+    <div class="product-wrapper">
+      <img src="{{ prod.featured_image | image_url: width: 800 }}" alt="{{ prod.title }}">
+      <span class="plus-icon" data-handle="{{ prod.handle }}">+</span>
+    </div>
+  {% else %}
+    <div class="placeholder">Select product {{ i }}</div>
+  {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Modal Popup -->
+<div id="product-modal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <button class="modal-close">×</button>
+    <div class="modal-container" >
+    <img class="modal-image" src="" alt="Product Image">
+    <div class="product-details" >
+    <h3 class="modal-title"></h3>
+    <p class="modal-price"></p>
+    <p class="modal-description"></p>
+    </div>
+</div>
+<form id="variantForm">
+  <div class="variant-label">Colour</div>
+  <div class="color-options"></div>
+
+  <div class="variant-label">Size</div>
+  <select class="size-select">
+    <option value="">Select Size</option>
+  </select>
+</form>
+
+
+
+
+    <button id="addToCartBtn" class="cta-btn">ADD TO CART</button>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Grid (6 Items)",
+  "settings": [
+    { "type": "product", "id": "product_1", "label": "Product 1" },
+    { "type": "product", "id": "product_2", "label": "Product 2" },
+    { "type": "product", "id": "product_3", "label": "Product 3" },
+    { "type": "product", "id": "product_4", "label": "Product 4" },
+    { "type": "product", "id": "product_5", "label": "Product 5" },
+    { "type": "product", "id": "product_6", "label": "Product 6" }
+  ],
+  "presets": [
+    { "name": "Product Grid (6 Items)" }
+  ]
+}
+{% endschema %}
+
+<script>
+function formatMoney(cents) {
+  return '$' + (cents / 100).toFixed(2);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const modal = document.getElementById('product-modal');
+  const variantForm = document.getElementById('variantForm');
+
+  document.querySelectorAll('.plus-icon').forEach(icon => {
+    icon.addEventListener('click', async function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const handle = this.dataset.handle;
+      if (!handle) return console.error("No handle found");
+
+      try {
+        const res = await fetch(`/products/${handle}.js`);
+        const data = await res.json();
+
+        // Fill modal content
+        modal.querySelector('.modal-title').textContent = data.title;
+        modal.querySelector('.modal-price').textContent = formatMoney(data.price);
+        modal.querySelector('.modal-description').innerHTML = data.description;
+        modal.querySelector('.modal-image').src = data.images[0];
+
+        // Clear previous options
+        const colorContainer = variantForm.querySelector('.color-options');
+        colorContainer.innerHTML = '';
+        const sizeSelect = variantForm.querySelector('.size-select');
+        sizeSelect.innerHTML = '<option value="">Select Size</option>';
+
+        // Fixed colors (adjust to your store)
+        const fixedColors = [
+          { name: "Black", class: "black" },
+          { name: "White", class: "white" }
+        ];
+
+        // Determine which product option is color and which is size
+        let colorOptionIndex = 0;
+        let sizeOptionIndex = 1;
+        const optionCounts = [
+          new Set(data.variants.map(v => v.option1)).size,
+          new Set(data.variants.map(v => v.option2)).size
+        ];
+
+        if(optionCounts[0] > 2) {
+          sizeOptionIndex = 0;
+          colorOptionIndex = 1;
+        }
+
+        // Build color options
+        fixedColors.forEach(c => {
+          const div = document.createElement('div');
+          div.className = 'color-box ' + c.class;
+          div.textContent = c.name;
+          div.dataset.color = c.name;
+
+          div.addEventListener('click', () => {
+            colorContainer.querySelectorAll('.color-box').forEach(b => b.classList.remove('selected'));
+            div.classList.add('selected');
+            variantForm.dataset.selectedColor = c.name;
+            updateSelectedVariant();
+          });
+
+          colorContainer.appendChild(div);
+        });
+
+        // Build size dropdown
+        const sizes = [...new Set(data.variants.map(v => v['option' + (sizeOptionIndex + 1)]))];
+        sizes.forEach(size => {
+          const option = document.createElement('option');
+          option.value = size;
+          option.textContent = size;
+          sizeSelect.appendChild(option);
+        });
+
+        // Default selections
+        colorContainer.querySelector('.color-box').click();
+        if(sizes.length) {
+          sizeSelect.value = sizes[0];
+          variantForm.dataset.selectedSize = sizes[0];
+        }
+
+        // Update selected variant when size changes
+        sizeSelect.addEventListener('change', () => {
+          variantForm.dataset.selectedSize = sizeSelect.value;
+          updateSelectedVariant();
+        });
+
+        // Function to find correct Shopify variant
+        function updateSelectedVariant() {
+          const selectedColor = variantForm.dataset.selectedColor;
+          const selectedSize = variantForm.dataset.selectedSize;
+
+          const match = data.variants.find(v =>
+            v['option' + (colorOptionIndex + 1)].toLowerCase() === selectedColor.toLowerCase() &&
+            v['option' + (sizeOptionIndex + 1)].toLowerCase() === (selectedSize || "").toLowerCase()
+          );
+
+          if(match) {
+            variantForm.dataset.selectedVariant = match.id;
+            console.log("Selected variant:", match);
+          } else {
+            variantForm.dataset.selectedVariant = null;
+            console.warn("No matching variant found for selected color/size");
+          }
+        }
+
+        // Show modal after everything is ready
+        modal.style.display = 'flex';
+      } catch(err) {
+        console.error("Failed to load product:", err);
+      }
+    });
+  });
+
+  // Close modal
+  modal.querySelector('.modal-close').addEventListener('click', () => modal.style.display = 'none');
+  window.addEventListener('click', e => { if(e.target === modal) modal.style.display = 'none'; });
+  
+// Add to Cart
+document.getElementById('addToCartBtn').addEventListener('click', async function(e) {
+    e.preventDefault();
+
+    const variantId = variantForm.dataset.selectedVariant; // Selected variant of main product
+    if (!variantId) return alert("Please select a variant!");
+
+    try {
+        // Add main product
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ quantity: 1, id: variantId })
+        });
+        const result = await response.json();
+
+        if (result && result.id) {
+            alert("Product added to cart!");
+            modal.style.display = 'none';
+
+            // ✅ Check if main product variant is Black + Medium
+            if (
+  (result.option1 && ["medium", "m"].includes(result.option1.toLowerCase())) &&
+  (result.option2 && result.option2.toLowerCase() === "black")
+) {
+    const softWinterJacketVariantId = "51272109031655";
+
+    await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ quantity: 1, id: softWinterJacketVariantId })
+    });
+}
+
+
+            // Fetch updated cart
+            const cartResponse = await fetch('/cart.js');
+            const cart = await cartResponse.json();
+
+            
+           // Update cart bubble count
+const cartText = document.querySelector('[ref="cartBubbleText"]');
+if (cartText) cartText.textContent = cart.item_count;
+
+
+            // Update cart drawer instantly
+            const cartDrawer = document.querySelector('.cart-drawer-component');
+            if (cartDrawer) {
+                const itemsContainer = cartDrawer.querySelector('.cart-items');
+                if (itemsContainer) {
+                    itemsContainer.innerHTML = '';
+                    cart.items.forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = 'cart-item';
+                        div.innerHTML = `
+                            <img src="${item.image}" alt="${item.title}">
+                            <div class="cart-info">
+                                <h4>${item.title}</h4>
+                                <p>${item.variant_title}</p>
+                                <p>${item.quantity} x $${(item.price / 100).toFixed(2)}</p>
+                            </div>
+                        `;
+                        itemsContainer.appendChild(div);
+                    });
+                }
+
+                // Optional: open cart drawer automatically
+                const cartButton = document.querySelector('.header-actions__action .header-actions__cart-icon');
+                if (cartButton) cartButton.click();
+            }
+
+        } else {
+            alert("Failed to add product to cart. Please try again.");
+        }
+
+    } catch (err) {
+        console.error("Add to cart failed:", err);
+        alert("Error adding product to cart. Check console for details.");
+    }
+});
+
+
+
+});
+</script>
+

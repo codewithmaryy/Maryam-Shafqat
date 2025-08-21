@@ -1,51 +1,83 @@
 {% comment %}
-Custom Banner section for Assesment Page
+Custom Banner section for Assessment Page
 {% endcomment %}
 
-<section class="assessment-banner" style="background-image:url('{{ "Frame.png" | assets_url }}');">
+<section class="assessment-banner">
+
+  <!-- Top bar -->
   <div class="banner-top">
+    <div class="hamburger">☰</div>
     <div class="banner-logo">{{ section.settings.logo_text }}</div>
     <div class="banner-tagline">{{ section.settings.tagline_text }}</div>
-    <button id="primaryBtn" class="primary-btn">{{ section.settings.primary_btn_text }}</button>
+    <button class="primary-btn">{{ section.settings.primary_btn_text }}</button>
   </div>
 
-  <div class="banner-main">
+  <!-- Heading and subtext (used on mobile only) -->
+<div class="banner-main">
+  <h1 class="banner-heading">{{ section.settings.main_heading }}</h1>
+  <p class="banner-subtext">Discover Joy: Your Ultimate Holiday Gift Destination.</p>
+</div>
+
+<!-- First frame (full width) -->
+<div class="first-frame" style="background-image:url('{{ "Frame2.png" | asset_url }}');"></div>
+
+<!-- Desktop row: text + frame -->
+<div class="banner-row">
+  <div class="banner-main desktop-only">
     <h1 class="banner-heading">{{ section.settings.main_heading }}</h1>
-    <p class="banner-subtext">{{ section.settings.sub_text }}</p>
-    <button id="ctaBtn" class="cta-btn">{{ section.settings.cta_btn_text }}</button>
+    <p class="banner-subtext">
+      {{ section.settings.sub_text }}
+    </p>
+    <button class="cta-btn">{{ section.settings.cta_btn_text }}</button>
   </div>
 
-  <div class="banner-note">
-    {{ section.settings.bottom_note }}
-  </div>
+  <div class="second-frame" style="background-image:url('{{ "Frame3.png" | asset_url }}');"></div>
+</div>
+
+
+  <!-- Banner note -->
+  <div class="banner-note">{{ section.settings.bottom_note }}</div>
+
 </section>
 
-<script>
-// Simple hover animation (vanilla JS)
-document.addEventListener('DOMContentLoaded', function() {
-  const primaryBtn = document.getElementById('primaryBtn');
-  const ctaBtn     = document.getElementById('ctaBtn');
 
-  [primaryBtn, ctaBtn].forEach(btn => {
-    if(!btn) return;
-    btn.addEventListener('mouseenter', () => btn.classList.add('animate'));
-    btn.addEventListener('mouseleave', () => btn.classList.remove('animate'));
-  });
-});
-</script>
+
+
 
 {% schema %}
 {
   "name": "Custom Banner",
   "settings": [
-    { "type": "text",     "id": "logo_text",       "label": "Logo text",           "default": "TISSO VISON" },
-    { "type": "text",     "id": "tagline_text",    "label": "Tagline",             "default": "Find the ideal gift for your loved ones."},
-    { "type": "text",     "id": "primary_btn_text","label": "Primary Button Text", "default": "CHOOSE GIFT"},
-
-    { "type": "text",     "id": "main_heading",    "label": "Main Heading",        "default": "The Gift Guide"},
-    { "type": "textarea", "id": "sub_text",        "label": "Sub Text",            "default": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season."},
-    { "type": "text",     "id": "cta_btn_text",    "label": "CTA Button Text",     "default": "SHOP NOW"},
-    { "type": "text",     "id": "bottom_note",     "label": "Bottom Note",         "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL" }
+    { "type": "text", "id": "logo_text",       "label": "Logo text",   "default": "TISSO VISON" },
+    { "type": "text", "id": "tagline_text",    "label": "Tagline",     "default": "Find the ideal gift for your loved ones."},
+    { "type": "text", "id": "primary_btn_text","label": "Primary Button",  "default": "CHOOSE GIFT →"},
+    { "type": "text", "id": "main_heading",    "label": "Main Heading", "default": "The Gift Guide"},
+    { "type": "textarea","id": "sub_text",     "label": "Sub Text",     "default":"Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season."},
+    { "type": "text", "id": "cta_btn_text",    "label": "CTA Button",   "default":"SHOP NOW →"},
+    { "type": "text", "id": "bottom_note",     "label": "Bottom Note",  "default":"SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"}
   ]
 }
 {% endschema %}
+
+<script>
+  // Wait until the DOM is ready
+  document.addEventListener('DOMContentLoaded', function () {
+    const primaryBtn = document.querySelector('.primary-btn');
+    const ctaBtn     = document.querySelector('.cta-btn');
+
+    // reusable function
+    function addHoverAnimation(btn) {
+      if (!btn) return;
+      btn.addEventListener('mouseenter', () => {
+        btn.classList.add('animate');
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.classList.remove('animate');
+      });
+    }
+
+    addHoverAnimation(primaryBtn);
+    addHoverAnimation(ctaBtn);
+  });
+</script>
+
