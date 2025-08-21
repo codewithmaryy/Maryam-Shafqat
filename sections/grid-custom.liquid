@@ -75,35 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const modal = document.getElementById('product-modal');
   const variantForm = document.getElementById('variantForm');
 
-  // Cart UI elements (optional)
-  const cartCountElem = document.getElementById('cart-count'); // cart counter
-  const cartItemsElem = document.getElementById('cart-items'); // mini-cart list
-
-  // Function to refresh cart dynamically
-  async function refreshCart() {
-    try {
-      const response = await fetch('/cart.js');
-      const cart = await response.json();
-      console.log("Current cart:", cart);
-
-      // Update cart count
-      if(cartCountElem) cartCountElem.textContent = cart.item_count;
-
-      // Update mini-cart items
-      if(cartItemsElem) {
-        cartItemsElem.innerHTML = '';
-        cart.items.forEach(item => {
-          const li = document.createElement('li');
-          li.textContent = `${item.quantity} x ${item.title} - ${formatMoney(item.price)}`;
-          cartItemsElem.appendChild(li);
-        });
-      }
-
-    } catch(err) {
-      console.error("Failed to refresh cart:", err);
-    }
-  }
-
   document.querySelectorAll('.plus-icon').forEach(icon => {
     icon.addEventListener('click', async function(e) {
       e.preventDefault();
@@ -128,19 +99,20 @@ document.addEventListener('DOMContentLoaded', function () {
         const sizeSelect = variantForm.querySelector('.size-select');
         sizeSelect.innerHTML = '<option value="">Select Size</option>';
 
-        // Fixed colors
+        // Fixed colors (adjust to your store)
         const fixedColors = [
           { name: "Black", class: "black" },
           { name: "White", class: "white" }
         ];
 
-        // Determine which option is color/size
+        // Determine which product option is color and which is size
         let colorOptionIndex = 0;
         let sizeOptionIndex = 1;
         const optionCounts = [
           new Set(data.variants.map(v => v.option1)).size,
           new Set(data.variants.map(v => v.option2)).size
         ];
+
         if(optionCounts[0] > 2) {
           sizeOptionIndex = 0;
           colorOptionIndex = 1;
@@ -179,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
           variantForm.dataset.selectedSize = sizes[0];
         }
 
-        // Update variant when size changes
+        // Update selected variant when size changes
         sizeSelect.addEventListener('change', () => {
           variantForm.dataset.selectedSize = sizeSelect.value;
           updateSelectedVariant();
@@ -200,10 +172,11 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("Selected variant:", match);
           } else {
             variantForm.dataset.selectedVariant = null;
-            console.warn("No matching variant found");
+            console.warn("No matching variant found for selected color/size");
           }
         }
 
+        // Show modal after everything is ready
         modal.style.display = 'flex';
       } catch(err) {
         console.error("Failed to load product:", err);
@@ -235,9 +208,6 @@ document.addEventListener('DOMContentLoaded', function () {
       if(result && result.id) {
         alert("Product added to cart!");
         modal.style.display = 'none';
-
-        // Dynamically refresh cart UI without page reload
-        refreshCart();
       } else {
         alert("Failed to add product to cart. Please try again.");
       }
@@ -248,5 +218,4 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
-
 
