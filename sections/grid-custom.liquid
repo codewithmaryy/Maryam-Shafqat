@@ -206,9 +206,18 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log("Add to cart result:", result);
 
       if(result && result.id) {
-        alert("Product added to cart!");
-        modal.style.display = 'none';
-      } else {
+    alert("Product added to cart!");
+    modal.style.display = 'none';
+
+    // --- NEW: Fetch updated cart ---
+    const cartResponse = await fetch('/cart.js');
+    const cart = await cartResponse.json();
+    console.log("Updated cart:", cart);
+
+    // Call a function to update your Spotify-style cart
+    updateSpotifyCart(cart);
+}
+ else {
         alert("Failed to add product to cart. Please try again.");
       }
     } catch(err) {
