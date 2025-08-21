@@ -93,26 +93,25 @@ document.addEventListener('DOMContentLoaded', function () {
         modal.querySelector('.modal-description').innerHTML = data.description;
         modal.querySelector('.modal-image').src = data.images[0];
 
-        // Clear previous variants
+        // Clear previous options
         const colorContainer = variantForm.querySelector('.color-options');
         colorContainer.innerHTML = '';
         const sizeSelect = variantForm.querySelector('.size-select');
         sizeSelect.innerHTML = '<option value="">Select Size</option>';
 
-        // Fixed colors (you can adjust)
+        // Fixed colors (adjust to your store)
         const fixedColors = [
           { name: "Black", class: "black" },
           { name: "White", class: "white" }
         ];
 
-        // Determine which option is color/size dynamically
+        // Determine which product option is color and which is size
+        let colorOptionIndex = 0;
+        let sizeOptionIndex = 1;
         const optionCounts = [
           new Set(data.variants.map(v => v.option1)).size,
           new Set(data.variants.map(v => v.option2)).size
         ];
-
-        let colorOptionIndex = 0;
-        let sizeOptionIndex = 1;
 
         if(optionCounts[0] > 2) {
           sizeOptionIndex = 0;
@@ -136,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
           colorContainer.appendChild(div);
         });
 
-        // Build size dropdown from variants
+        // Build size dropdown
         const sizes = [...new Set(data.variants.map(v => v['option' + (sizeOptionIndex + 1)]))];
         sizes.forEach(size => {
           const option = document.createElement('option');
@@ -147,8 +146,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Default selections
         colorContainer.querySelector('.color-box').click();
-        if(sizes.length) sizeSelect.value = sizes[0];
-        variantForm.dataset.selectedSize = sizes[0];
+        if(sizes.length) {
+          sizeSelect.value = sizes[0];
+          variantForm.dataset.selectedSize = sizes[0];
+        }
 
         // Update selected variant when size changes
         sizeSelect.addEventListener('change', () => {
@@ -156,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
           updateSelectedVariant();
         });
 
-        // Function to set selected variant based on selected color & size
+        // Function to find correct Shopify variant
         function updateSelectedVariant() {
           const selectedColor = variantForm.dataset.selectedColor;
           const selectedSize = variantForm.dataset.selectedSize;
@@ -168,11 +169,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
           if(match) {
             variantForm.dataset.selectedVariant = match.id;
+            console.log("Selected variant:", match);
+          } else {
+            variantForm.dataset.selectedVariant = null;
+            console.warn("No matching variant found for selected color/size");
           }
         }
 
         // Show modal after everything is ready
-        modal.style.display = 'block';
+        modal.style.display = 'flex';
       } catch(err) {
         console.error("Failed to load product:", err);
       }
@@ -183,27 +188,34 @@ document.addEventListener('DOMContentLoaded', function () {
   modal.querySelector('.modal-close').addEventListener('click', () => modal.style.display = 'none');
   window.addEventListener('click', e => { if(e.target === modal) modal.style.display = 'none'; });
 
-  // Add to cart
+  // Add to Cart
   document.getElementById('addToCartBtn').addEventListener('click', async function(e){
     e.preventDefault();
     const variantId = variantForm.dataset.selectedVariant;
+    console.log("Adding to cart variant ID:", variantId);
 
-    if(!variantId) {
-      return alert("Please select a variant!");
-    }
+    if(!variantId) return alert("Please select a variant!");
 
     try {
-      await fetch('/cart/add.js', {
+      const response = await fetch('/cart/add.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ quantity: 1, id: variantId })
       });
-      alert("Product added to cart!");
-      modal.style.display = 'none';
+      const result = await response.json();
+      console.log("Add to cart result:", result);
+
+      if(result && result.id) {
+        alert("Product added to cart!");
+        modal.style.display = 'none';
+      } else {
+        alert("Failed to add product to cart. Please try again.");
+      }
     } catch(err) {
       console.error("Add to cart failed:", err);
+      alert("Error adding product to cart. Check console for details.");
     }
   });
-
 });
 </script>
+
