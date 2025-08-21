@@ -196,7 +196,22 @@ document.getElementById('addToCartBtn').addEventListener('click', async function
     if(!variantId) return alert("Please select a variant!");
 
     try {
-        // Add selected product to cart
+        // Fetch the variant title of main product first
+        const variantResponse = await fetch(`/variants/${variantId}.js`);
+        const variantData = await variantResponse.json();
+        const variantTitle = variantData.title?.toLowerCase() || "";
+
+        // If Black + Medium, add Soft Winter Jacket first
+        if(variantTitle.includes("black") && variantTitle.includes("medium")){
+            const softWinterJacketVariantId = "51272109031655"; // Replace with actual ID
+            await fetch('/cart/add.js', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ quantity: 1, id: softWinterJacketVariantId })
+            });
+        }
+
+        // Add main product
         const response = await fetch('/cart/add.js', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -208,19 +223,6 @@ document.getElementById('addToCartBtn').addEventListener('click', async function
             alert("Product added to cart!");
             modal.style.display = 'none';
 
-            // ✅ Check if selected product is Black + Medium
-            const variantTitle = result.variant_title?.toLowerCase() || "";
-            if(variantTitle.includes("black") && variantTitle.includes("medium")){
-                // 👉 Replace this with Soft Winter Jacket's Black Medium variant ID
-                const softWinterJacketVariantId = "51272109031655";
-
-                await fetch('/cart/add.js', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ quantity: 1, id: softWinterJacketVariantId })
-                });
-            }
-
             // Fetch updated cart
             const cartResponse = await fetch('/cart.js');
             const cart = await cartResponse.json();
@@ -229,7 +231,7 @@ document.getElementById('addToCartBtn').addEventListener('click', async function
             const cartText = document.querySelector('.cart-bubble__text');
             if(cartText) cartText.textContent = cart.item_count;
 
-            // Update cart drawer items instantly
+            // Update cart drawer instantly
             const cartDrawer = document.querySelector('.cart-drawer-component');
             if(cartDrawer){
                 const itemsContainer = cartDrawer.querySelector('.cart-items');
