@@ -209,17 +209,19 @@ document.getElementById('addToCartBtn').addEventListener('click', async function
             modal.style.display = 'none';
 
             // ✅ Check if main product variant is Black + Medium
-            const variantTitle = (result.variant_title || "").toLowerCase();
-            if (variantTitle.includes("black") && variantTitle.includes("medium")) {
-                const softWinterJacketVariantId = "51272109031655";
+            if (
+  (result.option1 && ["medium", "m"].includes(result.option1.toLowerCase())) &&
+  (result.option2 && result.option2.toLowerCase() === "black")
+) {
+    const softWinterJacketVariantId = "51272109031655";
 
-                // Add Soft Winter Jacket
-                await fetch('/cart/add.js', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ quantity: 1, id: softWinterJacketVariantId })
-                });
-            }
+    await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ quantity: 1, id: softWinterJacketVariantId })
+    });
+}
+
 
             // Fetch updated cart
             const cartResponse = await fetch('/cart.js');
