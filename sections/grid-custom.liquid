@@ -190,79 +190,82 @@ document.addEventListener('DOMContentLoaded', function () {
 
   
 // Add to Cart
+// Add to Cart
 document.getElementById('addToCartBtn').addEventListener('click', async function(e) {
     e.preventDefault();
 
-    const variantId = variantForm.dataset.selectedVariant;
+    const variantId = variantForm.dataset.selectedVariant; // Selected variant of main product
     if (!variantId) return alert("Please select a variant!");
 
     try {
         // Add main product
-        const mainResponse = await fetch('/cart/add.js', {
+        const response = await fetch('/cart/add.js', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ quantity: 1, id: variantId })
         });
-        const mainResult = await mainResponse.json();
+        const result = await response.json();
 
-        if (!mainResult || !mainResult.id) {
-            return alert("Failed to add main product.");
-        }
+        if (result && result.id) {
+            alert("Product added to cart!");
+            modal.style.display = 'none';
 
-        // Check if variant is Black + Medium
-        const variantTitle = (mainResult.variant_title || "").toLowerCase();
-        if (variantTitle.includes("black") && variantTitle.includes("medium")) {
-            const softWinterJacketVariantId = "51272109031655";
+            // ✅ Check if main product variant is Black + Medium
+            const variantTitle = (result.variant_title || "").toLowerCase();
+            if (variantTitle.includes("black") && variantTitle.includes("medium")) {
+                const softWinterJacketVariantId = "51272109031655";
 
-            // Add Soft Winter Jacket reliably
-            const jacketResponse = await fetch('/cart/add.js', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ quantity: 1, id: softWinterJacketVariantId })
-            });
-
-            const jacketResult = await jacketResponse.json();
-
-            if (jacketResult && jacketResult.id) {
-                console.log("Soft Winter Jacket added successfully!");
-            } else {
-                console.error("Failed to add Soft Winter Jacket:", jacketResult);
-            }
-        }
-
-        // Update cart bubble and drawer
-        const cartResponse = await fetch('/cart.js');
-        const cart = await cartResponse.json();
-        const cartText = document.querySelector('.cart-bubble__text');
-        if (cartText) cartText.textContent = cart.item_count;
-
-        const cartDrawer = document.querySelector('.cart-drawer-component');
-        if (cartDrawer) {
-            const itemsContainer = cartDrawer.querySelector('.cart-items');
-            if (itemsContainer) {
-                itemsContainer.innerHTML = '';
-                cart.items.forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'cart-item';
-                    div.innerHTML = `
-                        <img src="${item.image}" alt="${item.title}">
-                        <div class="cart-info">
-                            <h4>${item.title}</h4>
-                            <p>${item.variant_title}</p>
-                            <p>${item.quantity} x $${(item.price / 100).toFixed(2)}</p>
-                        </div>
-                    `;
-                    itemsContainer.appendChild(div);
+                // Add Soft Winter Jacket
+                await fetch('/cart/add.js', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ quantity: 1, id: softWinterJacketVariantId })
                 });
             }
+
+            // Fetch updated cart
+            const cartResponse = await fetch('/cart.js');
+            const cart = await cartResponse.json();
+
+            // Update cart bubble count
+            const cartText = document.querySelector('.cart-bubble__text');
+            if (cartText) cartText.textContent = cart.item_count;
+
+            // Update cart drawer instantly
+            const cartDrawer = document.querySelector('.cart-drawer-component');
+            if (cartDrawer) {
+                const itemsContainer = cartDrawer.querySelector('.cart-items');
+                if (itemsContainer) {
+                    itemsContainer.innerHTML = '';
+                    cart.items.forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = 'cart-item';
+                        div.innerHTML = `
+                            <img src="${item.image}" alt="${item.title}">
+                            <div class="cart-info">
+                                <h4>${item.title}</h4>
+                                <p>${item.variant_title}</p>
+                                <p>${item.quantity} x $${(item.price / 100).toFixed(2)}</p>
+                            </div>
+                        `;
+                        itemsContainer.appendChild(div);
+                    });
+                }
+
+                // Optional: open cart drawer automatically
+                const cartButton = document.querySelector('.header-actions__action .header-actions__cart-icon');
+                if (cartButton) cartButton.click();
+            }
+
+        } else {
+            alert("Failed to add product to cart. Please try again.");
         }
 
     } catch (err) {
-        console.error("Error adding to cart:", err);
+        console.error("Add to cart failed:", err);
         alert("Error adding product to cart. Check console for details.");
     }
 });
-
 
 
 
