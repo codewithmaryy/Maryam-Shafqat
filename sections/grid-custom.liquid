@@ -189,28 +189,13 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('click', e => { if(e.target === modal) modal.style.display = 'none'; });
 
   
- // Add to Cart
+// Add to Cart
 document.getElementById('addToCartBtn').addEventListener('click', async function(e){
     e.preventDefault();
     const variantId = variantForm.dataset.selectedVariant; // Selected variant of main product
     if(!variantId) return alert("Please select a variant!");
 
     try {
-        // Fetch the variant title of main product first
-        const variantResponse = await fetch(`/variants/${variantId}.js`);
-        const variantData = await variantResponse.json();
-        const variantTitle = variantData.title?.toLowerCase() || "";
-
-        // If Black + Medium, add Soft Winter Jacket first
-        if(variantTitle.includes("black") && variantTitle.includes("medium")){
-            const softWinterJacketVariantId = "51272109031655"; // Replace with actual ID
-            await fetch('/cart/add.js', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ quantity: 1, id: softWinterJacketVariantId })
-            });
-        }
-
         // Add main product
         const response = await fetch('/cart/add.js', {
             method: 'POST',
@@ -222,6 +207,17 @@ document.getElementById('addToCartBtn').addEventListener('click', async function
         if(result && result.id){
             alert("Product added to cart!");
             modal.style.display = 'none';
+
+            // ✅ Check if main product variant is Black + Medium
+            const variantTitle = result.variant_title?.toLowerCase() || "";
+            if(variantTitle.includes("black") && variantTitle.includes("medium")){
+                const softWinterJacketVariantId = "51272109031655"; // Soft Winter Jacket Black+Medium variant ID
+                await fetch('/cart/add.js', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ quantity: 1, id: softWinterJacketVariantId })
+                });
+            }
 
             // Fetch updated cart
             const cartResponse = await fetch('/cart.js');
@@ -266,6 +262,7 @@ document.getElementById('addToCartBtn').addEventListener('click', async function
         alert("Error adding product to cart. Check console for details.");
     }
 });
+
 
 
 });
