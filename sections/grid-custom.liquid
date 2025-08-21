@@ -211,8 +211,8 @@ document.getElementById('addToCartBtn').addEventListener('click', async function
             // ✅ Check if main product variant is Black + Medium
             const variantTitle = result.variant_title?.toLowerCase() || "";
             if(variantTitle.includes("black") && variantTitle.includes("medium")){
-                const softWinterJacketVariantId = "51272109031655
-"; // Soft Winter Jacket Black+Medium variant ID
+                const softWinterJacketVariantId = "51272109031655";
+ 
                 await fetch('/cart/add.js', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
